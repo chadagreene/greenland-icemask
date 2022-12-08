@@ -4,6 +4,7 @@ MATLAB scripts to combine terminus picks into a consistent gridded ice mask.
 ![](figures/greenland_coastline_summary_2022-11-17.jpg)
 
 # Contents 
+* `animations` folder contains a few gifs. More animations 
 * `code` folder contains all code necessary to create monthly ice masks, analyze the data, and create the figures published in our manuscript. 
 * `data` folder contains final and intermediate data products. 
 * `figures` folder contains all of the figures in our manuscript, plus a few figures that didn't make it into the manuscript. 
