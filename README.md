@@ -4,7 +4,7 @@ MATLAB scripts to combine terminus picks into a consistent gridded ice mask.
 ![](figures/greenland_coastline_summary_2022-11-17.jpg)
 
 # Contents 
-* `animations` folder contains a few gifs. More animations 
+* `animations` folder contains a few gifs. Hundreds more animations are made for quality-control checks by `greenland_icemask_animations_for_qc.m`, but those animations are stored with the data because of filesize limitations. 
 * `code` folder contains all code necessary to create monthly ice masks, analyze the data, and create the figures published in our manuscript. 
 * `data` folder contains final and intermediate data products. 
 * `figures` folder contains all of the figures in our manuscript, plus a few figures that didn't make it into the manuscript. 
@@ -23,7 +23,7 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 		* [Climate Data Toolbox for MATLAB](https://github.com/chadagreene/CDT), 
 		* [ITS\_LIVE v2 Greenland velocity mosaic](https://its-live-data.s3.amazonaws.com/mosaics/annual/v02/ITS_LIVE_velocity_120m_GRE_0000_v02.nc). 
 	* Run `greenland_extruded_velocity_and_thickness_plotter.m` afterward to view the extruded velocity and thickness data, and make these: 
-	<p align="center"><img src="figures/greenland_extruded_velocity_and_thickness_2022-12-07.jpg" width="400"/></p>
+	<p align="center"><img src="figures/greenland_extruded_velocity_and_thickness_2022-12-07.jpg" width="600"/></p>
 	<p align="center"><img src="figures/greenland_extruded_thickness_error_2022-12-07.jpg" width="200"/></p>
 	<p align="center"><img src="figures/greenland_extruded_basins_2022-12-07.jpg" width="200"/></p>
 	
@@ -82,6 +82,8 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 			
 8. **`greenland_icemask_analysis_seasonal.m`** analyzes ice mask for sesonality. 
 			<p align="center"><img src="figures/mask_sinefit_example.jpg" width="400"/></p>
+	
+**`greenland_icemask_animations_for_qc.m`** creates glacier-by-glacier animations for quality control checks. These animations plot the final icemask along with the glacier pick data that went into them. 	
 	
 ### Functions	
 * **`terminus_masker_advect`** performs the heavy lifting of synthetically advecting terminus positions upstream and downstream to create a time-evolving monthly mask. 

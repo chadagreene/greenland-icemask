@@ -146,7 +146,7 @@ for kd = 1:295
       ind = D.x>xl(1) & D.x<xl(2) & D.y>yl(1) & D.y<yl(2) & D.t>(tdn(k)-16) & D.t<(tdn(k)+16) & D.p==7; 
       set(pl7,'xdata',D.x(ind),'ydata',D.y(ind))
       if any(ind)
-         lab(7).String = 'Black'; 
+         lab(7).String = 'Joughin'; 
       else
          lab(7).String = ''; 
       end
