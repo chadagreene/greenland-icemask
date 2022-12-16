@@ -13,9 +13,11 @@ MATLAB scripts to combine terminus picks into a consistent gridded ice mask.
 1. **`thickness_inversion_uncertainty.m`** explores the uncertainty associated with inverting bed
 elevations to solve for approximate thickness in fjords where ice no longer exists. In the map below, the edge of a semi-transparent blue ice sheet cuts diagonally across the image. Orange grid cells indicate locations where the BedMachine ice sheet edge is grounded below sea level and `errbed` is less than 100 m. For all such pixels around the ice sheet perimeter, we find that the BedMachine thickness is, on average, about 5% greater than H<sub>eq</sub>, the minimum thickness necessary for the ice to be grounded. When we invert BedMachine bed elevations to obtain hydrostatic-equilibrium thickness and multiply by 1.05, our inverted thickness matches BedMachine thickness within ±32.7 m. 
 	<p align="center"><img src="figures/thickness_inversion_uncertainty.jpg" width="400"/></p>
+	
+1. **`AERODEM_cleaner.m`** removes questionable data from AERODEM and creates `aerodem_clean.mat`. 
 
-2. **`greenland_extrude_velocity_and_thickness_v2.m`** takes ITS\_LIVE v2 velocities, fills in missing data with paleo modeled velocities wherever possible, and then extrapolates beyond all measured and modeled extents to fill the entire domain. This script also extrapolates BedMachine v5 thickness in the direction of the extrapolated velocities. 
-	* This script creates `greenland_extruded_velocity_and_thickness_2011-11-17.nc`.
+1. **`greenland_extrude_velocity_and_thickness_v2.m`** takes ITS\_LIVE v2 velocities, fills in missing data with paleo modeled velocities wherever possible, and then extrapolates beyond all measured and modeled extents to fill the entire domain. This script also extrapolates BedMachine v5 thickness in the direction of the extrapolated velocities. 
+	* This script creates `greenland_extruded_velocity_and_thickness_2022-12-15.nc`.
 	* Requirements: 
 		* [Arctic Mapping Tools for MATLAB](https://github.com/chadagreene/arctic-mapping-tools), 
 		* [BedMachine toolbox](https://github.com/chadagreene/BedMachine) with 
@@ -23,19 +25,19 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 		* [Climate Data Toolbox for MATLAB](https://github.com/chadagreene/CDT), 
 		* [ITS\_LIVE v2 Greenland velocity mosaic](https://its-live-data.s3.amazonaws.com/mosaics/annual/v02/ITS_LIVE_velocity_120m_GRE_0000_v02.nc). 
 	* Run `greenland_extruded_velocity_and_thickness_plotter.m` afterward to view the extruded velocity and thickness data, and make these: 
-	<p align="center"><img src="figures/greenland_extruded_velocity_and_thickness_2022-12-07.jpg" width="600"/></p>
-	<p align="center"><img src="figures/greenland_extruded_thickness_error_2022-12-07.jpg" width="200"/></p>
-	<p align="center"><img src="figures/greenland_extruded_basins_2022-12-07.jpg" width="200"/></p>
+	<p align="center"><img src="figures/greenland_extruded_velocity_and_thickness_2022-12-15.jpg" width="600"/></p>
+	<p align="center"><img src="figures/greenland_extruded_thickness_error_2022-12-15.jpg" width="200"/></p>
+	<p align="center"><img src="figures/greenland_extruded_basins_2022-12-15.jpg" width="200"/></p>
 	
-3. **`measures_terminuspicks_compiler.m`** compiles all annual shapefile data from *Joughin et al., 2021* into a single .mat file. Put all 49 years of shapefile data into a single folder then run this script. 
+1. **`measures_terminuspicks_compiler.m`** compiles all annual shapefile data from *Joughin et al., 2021* into a single .mat file. Put all 49 years of shapefile data into a single folder then run this script. 
 	* This script creates `measures_greenland_terminus_picks_v2.mat`.
 	* Requirements:
 		* MATLAB's Mapping Toolbox (for `shaperead`) and 
 		* [MEaSUREs Annual Greenland Outlet Glacier Terminus Positions from SAR Mosaics, Version 2 shapefile data](https://nsidc.org/data/NSIDC-0642). 
 
-4. **`autoterm_data_reformatter.m`** combines shapefile data from AutoTerm into a single .mat file, in a shapefile-like structure that's easy to combine with shapefiles from the other datasets. This script only saves data that meet certain error quality thresholds, which have already been defined on a per-glacier basis by manual inspection and can be found in `autoterm_error_thresholds.mat`. This script saves `autoterm_reformatted_trimmed.mat`. 
+1. **`autoterm_data_reformatter.m`** combines shapefile data from AutoTerm into a single .mat file, in a shapefile-like structure that's easy to combine with shapefiles from the other datasets. This script only saves data that meet certain error quality thresholds, which have already been defined on a per-glacier basis by manual inspection and can be found in `autoterm_error_thresholds.mat`. This script saves `autoterm_reformatted_trimmed.mat`. 
 
-5. **`terminus_data_densifier.m`** reads in terminus position shapefiles from TermPicks ([*Goliber et al.*](https://doi.org/10.5194/tc-16-3215-2022)), CALFIN ([*Cheng et al.*](https://doi.org/10.5194/tc-15-1663-2021)), MEaSUREs v2 ([*Joughin et al.*](https://nsidc.org/data/nsidc-0642/versions/2)), and AutoTerm ([*Zhang et al.*](https://doi.org/10.5281/zenodo.7190740)). 
+1. **`terminus_data_densifier.m`** reads in terminus position shapefiles from TermPicks ([*Goliber et al.*](https://doi.org/10.5194/tc-16-3215-2022)), CALFIN ([*Cheng et al.*](https://doi.org/10.5194/tc-15-1663-2021)), MEaSUREs v2 ([*Joughin et al.*](https://nsidc.org/data/nsidc-0642/versions/2)), and AutoTerm ([*Zhang et al.*](https://doi.org/10.5281/zenodo.7190740)). 
 	* This script: 
 	
 		a. Compiles terminus position data from TermPicks ([*Goliber et al.*](https://doi.org/10.5194/tc-16-3215-2022)), CALFIN ([*Cheng et al.*](https://doi.org/10.5194/tc-15-1663-2021)), MEaSUREs v2 ([*Joughin et al.*](https://nsidc.org/data/nsidc-0642/versions/2)), and AutoTerm ([*Zhang et al.*](https://doi.org/10.5281/zenodo.7190740)). There is no terminus data in 1983. Here is the distribution of all the 63,473 terminus position picks:
@@ -52,7 +54,7 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 		* [Climate Data Toolbox for MATLAB](https://github.com/chadagreene/CDT) for `subsubplot` and `hline` (can be replaced by built-in `subplot` and `yline`), 
 		* [Arctic Mapping Tools for MATLAB](https://github.com/chadagreene/arctic-mapping-tools) for `psnpath`. 
 		
-6. **`greenland_termini_to_icemasks.m`** creates monthly masks from `terminus_data_densified.mat`.
+1. **`greenland_termini_to_icemasks.m`** creates monthly masks from `terminus_data_densified.mat`.
 	* This script loads densified terminus position data and gridded, extruded thickness & velocity data. 
 	* The logic of the masking is as follows: 
 		
@@ -77,10 +79,10 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 		* [`gridbin`](https://github.com/chadagreene/gridbin), which efficiently bins scattered data into a 2D grid. 
 		* `filt2` from Climate Data Toolbox for MATLAB to lowpass filter the GIMP mask before interpolating. 
 	
-7. **`greenland_icemask_analysis_secular.m`** analyzes ice mask for overall secular changes in mass and area. 
+1. **`greenland_icemask_analysis_secular.m`** analyzes ice mask for overall secular changes in mass and area. 
 			<p align="center"><img src="figures/greenland_masschange_timeseries.jpg" width="400"/></p>
 			
-8. **`greenland_icemask_analysis_seasonal.m`** analyzes ice mask for sesonality. 
+1. **`greenland_icemask_analysis_seasonal.m`** analyzes ice mask for sesonality. 
 			<p align="center"><img src="figures/mask_sinefit_example.jpg" width="400"/></p>
 	
 **`greenland_icemask_animations_for_qc.m`** creates glacier-by-glacier animations for quality control checks. These animations plot the final icemask along with the glacier pick data that went into them. 	

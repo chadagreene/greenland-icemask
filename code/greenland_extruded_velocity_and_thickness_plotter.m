@@ -7,7 +7,7 @@
 
 %%  Load data 
 
-filename = 'greenland_extruded_velocity_and_thickness_2022-12-07.nc'; 
+filename = 'greenland_extruded_velocity_and_thickness_2022-12-15.nc'; 
 
 x = ncread(filename,'x'); 
 y = ncread(filename,'y'); 
@@ -33,7 +33,7 @@ fsl = 6; % fontsize, label
 zl = [ -244567.60    -173694.31   -2334333.46   -2210298.49];
 
 col = hex2rgb({'323031';'177e89';'5d2e8c';'db3a34';'ffc857'});
-vcol = hex2rgb({'323031';'177e89';'23C0D1';'5d2e8c';'db3a34';'ffc857'});
+%vcol = hex2rgb({'323031';'177e89';'23C0D1';'5d2e8c';'db3a34';'ffc857'});
 
 figure('pos',[20 50 669 556])
 subsubplot(2,4,1) % subsubplot is a CDT function
@@ -56,7 +56,6 @@ plot(zl([1 2 2 1 1]),zl([3 3 4 4 3]),'linewidth',.3,'color','w')
 %text(zl(2),zl(4),'e','horiz','left','vert','top','fontsize',fsl,'color','w')
 ntitle(' a ','location','nw','fontsize',fst,'fontweight','bold','color','w','background','k','margin',0.001)
 
-
 subsubplot(2,4,2)
 imagescn(x,y,v_source)
 axis image off
@@ -67,9 +66,9 @@ ntitle('v\_source','fontname','courier','color','w','fontweight','bold','fontsiz
 cb(2) = colorbar('south','color','k'); 
 cb(2).Position(3:4) = cb(2).Position(3:4)*0.4; 
 %cb(2).Position(1) = cb(2).Position(1)+.2; 
-set(cb(2),'xtick',0:5,'fontsize',fsl,'xticklabel',{'rock','ITS\_LIVE','Joughin','interpolation','paleo model','extrapolation'},'color','w')
-colormap(gca,vcol)
-caxis([-.5 5.5])
+set(cb(2),'xtick',0:4,'fontsize',fsl,'xticklabel',{'rock','observed','interpolated','paleo flowlines','extrapolated'},'color','w')
+colormap(gca,col)
+caxis([-.5 4.5])
 plot(zl([1 2 2 1 1]),zl([3 3 4 4 3]),'linewidth',.3,'color','w')
 %text(zl(2),zl(4),'f','horiz','left','vert','top','fontsize',fsl,'color','w')
 ntitle(' b ','location','nw','fontsize',fst,'fontweight','bold','color','w','background','k','margin',0.001)
@@ -104,9 +103,9 @@ cb(4) = colorbar('south','color','k');
 cb(4).Position(3:4) = cb(4).Position(3:4)*0.4; 
 set(cb(4),'xtick',[0:1000:4000],'fontsize',fsl)
 %cb(4).Position(1) = cb(4).Position(1)+.2; 
-set(cb(4),'xtick',0:2,'xticklabel',{'rock','BedMachine','inversion'},'color','w','fontsize',fsl)
-colormap(gca,col([1 2 5],:))
-caxis([-.5 2.5])
+set(cb(4),'xtick',0:3,'xticklabel',{'rock','BedMachine','AERODEM','inversion'},'color','w','fontsize',fsl)
+colormap(gca,col([1 2 3 5],:))
+caxis([-.5 3.5])
 plot(zl([1 2 2 1 1]),zl([3 3 4 4 3]),'linewidth',.3,'color','w')
 %text(zl(2),zl(4),'h','horiz','left','vert','top','fontsize',fsl,'color','w')
 ntitle(' d ','location','nw','fontsize',fst,'fontweight','bold','color','w','background','k','margin',0.001)
@@ -156,9 +155,9 @@ ntitle('v\_source','fontname','courier','color','w','fontweight','bold','fontsiz
 cb(6) = colorbar('south','color','k'); 
 cb(6).Position(3:4) = cb(6).Position(3:4)*0.4; 
 %cb(2).Position(1) = cb(2).Position(1)+.2; 
-set(cb(6),'xtick',0:5,'fontsize',fsl,'xticklabel',{'rock','ITS\_LIVE','Joughin','interpolation','paleo model','extrapolation'},'color','w')
-colormap(gca,vcol)
-caxis([-.5 5.5])
+set(cb(6),'xtick',0:4,'fontsize',fsl,'xticklabel',{'rock','observed','interpolated','paleo flowlines','extrapolated'},'color','w')
+colormap(gca,col)
+caxis([-.5 4.5])
 axis(zl)
 ntitle(' f ','location','nw','fontsize',fst,'fontweight','bold','color','w','background','k','margin',0.001)
 
@@ -190,9 +189,9 @@ cb(8) = colorbar('south','color','k');
 cb(8).Position(3:4) = cb(8).Position(3:4)*0.4; 
 set(cb(8),'xtick',[0:1000:4000],'fontsize',fsl)
 %cb(4).Position(1) = cb(4).Position(1)+.2; 
-set(cb(8),'xtick',0:2,'xticklabel',{'rock','BedMachine','inversion'},'color','w','fontsize',fsl)
-colormap(gca,col([1 2 5],:))
-caxis([-.5 2.5])
+set(cb(8),'xtick',0:3,'xticklabel',{'rock','BedMachine','AERODEM','inversion'},'color','w','fontsize',fsl)
+colormap(gca,col([1 2 3 5],:))
+caxis([-.5 3.5])
 ntitle(' h ','location','nw','fontsize',fst,'fontweight','bold','color','w','background','k','margin',0.001)
 axis(zl) 
 
@@ -202,7 +201,7 @@ hs(2).LineWidth = 1;
 set(gcf,'color','k')
 % goal width 7.2 in = 183 mm
 
-%export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_velocity_and_thickness_2022-12-07.jpg','-r600')
+%export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_velocity_and_thickness_2022-12-15.jpg','-r600')
 
 %%
 
@@ -247,7 +246,7 @@ axis(zl)
 [hs(1),ht(1)] = scalebarpsn('location','se','fontsize',fsl,'color','k');
 hs(1).LineWidth = 1; 
 
-% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_thickness_error_2022-12-07.jpg','-r600')
+% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_thickness_error_2022-12-15.jpg','-r600')
 
 %%
 
@@ -283,4 +282,4 @@ axis(zl)
 [hs(1),ht(1)] = scalebarpsn('location','se','fontsize',fsl,'color','k');
 hs(1).LineWidth = 1; 
 
-% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_basins_2022-12-07.jpg','-r600')
+% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_basins_2022-12-15.jpg','-r600')
