@@ -11,12 +11,13 @@ readme = ['Written by ',mfilename,'.m.']
 
 if devon    
    addpath(genpath('/mnt/devon2-r1/devon0/cgreene/greenland_masking'))
-   cd('/Applications/MATLAB_R2022a.app/toolbox/matlab/specgraph/private')
-   fn_term = '/mnt/devon2-r1/devon0/cgreene/greenland_masking/terminus_data_densified_2022-11-14..mat';
+   cd('/usr/local/matlab-9.9/toolbox/matlab/specgraph/private')
+   fn_term = '/mnt/devon2-r1/devon0/cgreene/greenland_masking/terminus_data_densified_2022-11-14.mat';
    fn_initial = ['/mnt/devon2-r1/devon0/cgreene/greenland_masking/greenland_icemask_initial_',datestr(now,'yyyy-mm-dd'),'.mat']; 
    fn_backfill = ['/mnt/devon2-r1/devon0/cgreene/greenland_masking/greenland_icemask_backfill_',datestr(now,'yyyy-mm-dd'),'.mat'];
    fn_prefinal = ['/mnt/devon2-r1/devon0/cgreene/greenland_masking/greenland_icemask_prefinal_',datestr(now,'yyyy-mm-dd'),'.mat'];
    fn_final = ['/mnt/devon2-r1/devon0/cgreene/greenland_masking/greenland_icemask_final_',datestr(now,'yyyy-mm-dd'),'.mat'];
+   fn_clean = ['/mnt/devon2-r1/devon0/cgreene/greenland_masking/greenland_icemask_clean_',datestr(now,'yyyy-mm-dd'),'.mat'];
    newfilename = ['/mnt/devon2-r1/devon0/cgreene/greenland_masking/greenland_monthly_ice_masks_',datestr(now,'yyyy-mm-dd'),'.nc']; 
 
 else
@@ -26,6 +27,7 @@ else
    fn_backfill = ['/Users/cgreene/Documents/MATLAB/greenland_icemask_backfill_',datestr(now,'yyyy-mm-dd'),'.mat'];
    fn_prefinal = ['/Users/cgreene/Documents/MATLAB/greenland_icemask_prefinal_',datestr(now,'yyyy-mm-dd'),'.mat'];
    fn_final = ['/Users/cgreene/Documents/MATLAB/greenland_icemask_final_',datestr(now,'yyyy-mm-dd'),'.mat'];
+   fn_clean = ['/Users/cgreene/Documents/MATLAB/greenland_icemask_clean_',datestr(now,'yyyy-mm-dd'),'.mat'];
    newfilename = ['/Users/cgreene/Documents/MATLAB/greenland_monthly_ice_masks_',datestr(now,'yyyy-mm-dd'),'.nc']; 
 end
 
@@ -57,7 +59,7 @@ clear ind
 
 %% Load gridded data 
 
-filename = 'greenland_extruded_velocity_and_thickness_2022-11-29.nc'; 
+filename = 'greenland_extruded_velocity_and_thickness_2022-12-15.nc'; 
 
 x = double(ncread(filename,'x')); 
 y = double(ncread(filename,'y')); 
@@ -344,16 +346,6 @@ for k = [k0:length(t) (k0-1):-1:1]
            %indkp = cp==kp &  interp2(x,y,~rock,cx,cy,'nearest') & cx>x(1) & cx<x(end) & cy<y(1) & cy>y(end); 
            indkp = cp==kp & cx>x(1) & cx<x(end) & cy<y(1) & cy>y(end); 
    
-%            % Upstream from future positions advected to today: 
-%            st = stream2(x,y,-vx,-vy,cx(indkp),cy(indkp),[step Npts]);
-%            us = cell2mat(st(:)); % stream paths upstream of the terminus
-%            if ~isempty(us)
-%                isf = isfinite(us(:,1)); 
-%                Us = gridbin(us(isf,1),us(isf,2),true(size(us(isf,1))),x,y,@any); % gridded cells upstream of the terminus 
-%                Us = imfill(bwmorph(Us,'close'),4,'holes'); 
-%            else
-%                Us = false(size(X)); 
-%            end
 
            % Upstream from future positions advected to today: 
            if any(indkp)
@@ -370,16 +362,6 @@ for k = [k0:length(t) (k0-1):-1:1]
                Us = false(size(X)); 
            end 
 
-%            % Downstream from past positions advected to today: 
-%            st = stream2(x,y,vx,vy,cx(indkp),cy(indkp),[step Npts]);
-%            ds = cell2mat(st(:)); % stream paths from terminus 
-%            if ~isempty(ds)
-%                isf = isfinite(ds(:,1)); 
-%                Ds = gridbin(ds(isf,1),ds(isf,2),true(size(ds(isf,1))),x,y,@any); % Grid cells that are downstream of the terminus 
-%                Ds = imfill(bwmorph(Ds,'close'),4,'holes'); 
-%            else
-%                Ds = false(size(X)); 
-%            end
 
            % Downstream from past positions advected to today: 
            if any(indkp)
@@ -610,16 +592,7 @@ for k = (length(t)-1):-1:1
          % Indices of advected past points that fall within unconstrained grid cells:
          indkpf = cpf==kp & cxf>x(1) & cxf<x(end) & cyf<y(1) & cyf>y(end); 
 
-%          % Upstream from future positions advected to today: 
-%          us = stream2(x,y,-vx,-vy,cxf(indkpf),cyf(indkpf),[step Npts]);
-%          us = cell2mat(st(:)); % stream paths upstream of the terminus
-%          if ~isempty(us)
-%             isf = isfinite(us(:,1)); 
-%             Us = gridbin(us(isf,1),us(isf,2),true(size(us(isf,1))),x,y,@any); % gridded cells upstream of the terminus 
-%             Us = imfill(bwmorph(Us,'close'),4,'holes'); 
-%          else
-%             Us = false(size(X)); 
-%          end
+
 
          % Upstream from future positions advected to today: 
          if any(indkpf)
@@ -638,16 +611,7 @@ for k = (length(t)-1):-1:1
          % Indices of advected past points that fall within unconstrained grid cells:
          indkpp = cpp==kp & cxp>x(1) & cxp<x(end) & cyp<y(1) & cyp>y(end); 
          
-%          % Downstream from past positions advected to today: 
-%          st = stream2(x,y,vx,vy,cxp(indkpp),cyp(indkpp),[step Npts]);
-%          ds = cell2mat(st(:)); % stream paths from terminus 
-%          if ~isempty(ds)
-%             isf = isfinite(ds(:,1)); 
-%             Ds = gridbin(ds(isf,1),ds(isf,2),true(size(ds(isf,1))),x,y,@any); % Grid cells that are downstream of the terminus 
-%             Ds = imfill(bwmorph(Ds,'close'),4,'holes'); 
-%          else
-%             Ds = false(size(X)); 
-%          end
+
 
            % Downstream from past positions advected to today: 
            if any(indkpp)
@@ -752,16 +716,6 @@ for k = 2:length(t)
       % Indices of advected past points that fall within unconstrained grid cells:
       indkpf = cpf==kp & cxf>x(1) & cxf<x(end) & cyf<y(1) & cyf>y(end); 
       
-%       % Upstream from future positions advected to today: 
-%       st = stream2(x,y,-vx,-vy,cxf(indkpf),cyf(indkpf),[step Npts]);
-%       us = cell2mat(st(:)); % stream paths upstream of the terminus
-%       if ~isempty(us)
-%          isf = isfinite(us(:,1)); 
-%          Us = gridbin(us(isf,1),us(isf,2),true(size(us(isf,1))),x,y,@any); % gridded cells upstream of the terminus 
-%          Us = imfill(bwmorph(Us,'close'),4,'holes'); 
-%       else
-%          Us = false(size(X)); 
-%       end
 
           % Upstream from future positions advected to today: 
           if any(indkpf)
@@ -780,17 +734,6 @@ for k = 2:length(t)
 %       % Indices of advected past points that fall within unconstrained grid cells:
        indkpp = cpp==kp & cxp>x(1) & cxp<x(end) & cyp<y(1) & cyp>y(end); 
 %       
-%       % Downstream from past positions advected to today: 
-%       st = stream2(x,y,vx,vy,cxp(indkpp),cyp(indkpp),[step Npts]);
-%       ds = cell2mat(st(:)); % stream paths from terminus 
-%       if ~isempty(ds)
-%          isf = isfinite(ds(:,1)); 
-%          Ds = gridbin(ds(isf,1),ds(isf,2),true(size(ds(isf,1))),x,y,@any); % Grid cells that are downstream of the terminus 
-%          Ds = imfill(bwmorph(Ds,'close'),4,'holes'); 
-%       else
-%          Ds = false(size(X)); 
-%       end
-
 
            % Downstream from past positions advected to today: 
            if any(indkpp)
@@ -876,131 +819,73 @@ clear tmp
 land = remove_icebergs(land,marine,always_land,never_land);
 landsum(:,size(landsum,2)+1) = squeeze(sum(sum(land))); 
 
-%land_prefinal = land; 
+
+
+%% Clean 
+
+vtol = 1.25; % velocity tolerance. 1.25 allows 25% velocity variation. 
+
+dt = diff(t); 
+
+disp([datestr(now),': Starting clean-up cube.'])
+   
+for k = [2:(length(t)-1) (length(t)-2):-1:2]
+
+   tmp = land(:,:,k); 
+
+   % Find out if it will be ice next month by interpolating next month's mask at today's grid point positions plus dt days of displacement: 
+   
+   F.Values = single(flipud(land(:,:,k+1)));
+   will_be_ice = F(Y+dY*dt(k)*vtol,X+dX*dt(k)*vtol)==1;
+   
+   F.Values = single(flipud(land(:,:,k-1)));
+   was_ice = F(Y-dY*dt(k-1)*vtol,X-dX*dt(k-1)*vtol)==1;
+
+   tmp(sometimes_ice & will_be_ice & was_ice) = true; 
+   tmp(sometimes_ice & ~was_ice & ~will_be_ice) = false; 
+
+    if t(k)>=731747
+        tmp(jakotrim & sometimes_ice) = false; 
+    end
+        tmp(rock) = true; 
+        tmp = imfill(tmp,8,'holes'); 
+   
+   land(:,:,k) = tmp; 
+   disp([datestr(now),': Nearly final clean-up cube finished month ',num2str(k),' of ',num2str(length(t)),'.'])
+
+end
+
+clear tmp 
+
+land = remove_icebergs(land,marine,always_land,never_land);
+landsum(:,size(landsum,2)+1) = squeeze(sum(sum(land))); 
+
+disp([datestr(now),': Starting really truly final clean-up cube.'])
+   
+for k = length(t):-1:2
+
+   tmp = land(:,:,k); 
+
+   
+   F.Values = single(flipud(land(:,:,k-1)));
+   was_ice = F(Y-dY*dt(k-1)*vtol,X-dX*dt(k-1)*vtol)==1;
+
+   tmp(sometimes_ice & ~was_ice) = false; 
+
+        tmp(rock) = true; 
+        tmp = imfill(tmp,8,'holes'); 
+   
+   land(:,:,k) = tmp; 
+   disp([datestr(now),': Truly final clean-up cube finished month ',num2str(k),' of ',num2str(length(t)),'.'])
+
+end
+
+clear tmp 
+
+land = remove_icebergs(land,marine,always_land,never_land);
 
 % Write the data in case of crash: 
-%save(fn_prefinal,'land','-v7.3')
-
-
-%% Clean
-% One final backward-moving check
-% clear kp 
-% 
-% land_preclean = land; 
-% 
-% dt = diff(t); 
-% 
-% disp([datestr(now),': Starting clean-up cube.'])
-%    
-% for k = (length(t)-1):-1:1
-% 
-%    tmp = land(:,:,k); 
-% 
-%    % Find out if it will be ice next month by interpolating next month's mask at today's grid point positions plus dt days of displacement: 
-%    will_be_ice = interp2(x,y,single(land(:,:,k+1)),X+dX*dt(k),Y+dY*dt(k))==1;
-%    
-%    tmp(~will_be_ice & sometimes_ice) = false; % If these pixels will move to a place that's ice next month, make them true today.
-%    
-%    % This month's terminus datapoints: 
-%    indp = T.t>=(t(k)-31) & T.t<=t(k); % Terminus points within the past 31 days
-%    indf = T.t<=(t(k)+31) & T.t>=t(k); % Terminus points within the next 31 days
-% 
-%    if any(indp) | any(indf)
-%       
-%       % Get terminus positions taken within 30 days in the past:  
-%       cxp = T.x(indp);
-%       cyp = T.y(indp);
-%       cpp = T.p(indp); 
-%       dtp = T.t(indp) - t(k); 
-%       
-%       % Account for <=30 days of advection:
-%       dxp = interp2(x,y,vx,cxp,cyp) .* dtp/365.25;
-%       dyp = interp2(x,y,vy,cxp,cyp) .* dtp/365.25;
-%       cxp = cxp - dxp; 
-%       cyp = cyp - dyp; 
-%       
-%       % Get terminus positions taken less than 30 days in the future:  
-%       cxf = T.x(indf);
-%       cyf = T.y(indf);
-%       cpf = T.p(indf); 
-%       dtf = T.t(indf) - t(k); 
-%       
-%       % Account for <=30 days of advection:
-%       dxf = interp2(x,y,vx,cxf,cyf) .* dtf/365.25;
-%       dyf = interp2(x,y,vy,cxf,cyf) .* dtf/365.25;
-%       cxf = cxf - dxf; 
-%       cyf = cyf - dyf; 
-%       
-%       % Loop through all priorities of data, starting with the lousiest: 
-%       %for kp = 1:max(T.p)
-%          
-%          % Indices of advected past points that fall within unconstrained grid cells:
-%          %indkpf = cpf==kp & cxf>x(1) & cxf<x(end) & cyf<y(1) & cyf>y(end); 
-%           indkpf = cxf>x(1) & cxf<x(end) & cyf<y(1) & cyf>y(end); 
-% 
-% 
-%          % Upstream from future positions advected to today: 
-%          if any(indkpf)
-%             [xus,yus] = stream2_fast(x,yf,-vxf,-vyf,cxf(indkpf),cyf(indkpf),[step Npts]);
-%          else 
-%             xus = []; 
-%          end
-%          if ~isempty(xus)
-%             isf = isfinite(xus); 
-%             Us = gridbin(xus(isf),yus(isf),true(size(xus(isf))),x,y,@any); % gridded cells upstream of the terminus 
-%             Us = imfill(bwmorph(Us,'close'),4,'holes'); 
-%          else
-%             Us = false(size(X)); 
-%          end
-%          
-%          % Indices of advected past points that fall within unconstrained grid cells:
-%          %indkpp = cpp==kp & cxp>x(1) & cxp<x(end) & cyp<y(1) & cyp>y(end); 
-%          indkpp = cxp>x(1) & cxp<x(end) & cyp<y(1) & cyp>y(end); 
-%          
-% 
-%            % Downstream from past positions advected to today: 
-%            if any(indkpp)
-%                [xds,yds] = stream2_fast(x,yf,vxf,vyf,cxp(indkpp),cyp(indkpp),[step Npts]);
-%            else 
-%               xds = []; 
-%            end
-%            if ~isempty(xds)
-%                isf = isfinite(xds); 
-%                Ds = gridbin(xds(isf),yds(isf),true(size(xds(isf))),x,y,@any); % Grid cells that are downstream of the terminus 
-%                Ds = imfill(bwmorph(Ds,'close'),4,'holes'); 
-%            else
-%                Ds = false(size(X)); 
-%            end
-%          
-%          FillRegion = Us & ~rock; 
-%          CarveRegion = Ds & ~rock; 
-%          
-%          tmp(CarveRegion) = false; 
-%          tmp(FillRegion) = true; % overwrites any potential CarveRegion
-%    
-%          if t(k)>=731747
-%             tmp(jakotrim & sometimes_ice) = false; 
-%          end
-%          tmp(rock) = true; 
-%          tmp = imfill(tmp,4,'holes'); 
-%       
-%       %end
-%    end
-%    
-%    land(:,:,k) = tmp; 
-%    disp([datestr(now),': Final clean-up cube finished month ',num2str(k),' of ',num2str(length(t)),'.'])
-% 
-% end
-% 
-% clear tmp indp indf Ds Us FillRegion CarveRegion st us ds dxf dyf cxd cyf cpf cpp cxp cyp dxp dyp 
-% 
-% land = remove_icebergs(land,marine,always_land,never_land);
-% landsum(:,size(landsum,2)+1) = squeeze(sum(sum(land_backfill))); 
-% 
-% %land_prefinal = land; 
-% 
-% % Write the data in case of crash: 
-% %save(fn_prefinal,'land','-v7.3')
+save(fn_clean,'land','-v7.3')
 
 clear land_backfill land_prefinal marine never_land sometimes_ice tmp was_ocean will_be_ice th vx* vy*
 
@@ -1026,24 +911,13 @@ end
 
 %%
 
-% C = contourc(x,y,double(rock),[0.5 0.5]); 
-% 
-% % Convert the contour matrix to x,y coordinates: 
-% [xb,yb] = C2xyz(C); 
-% 
-% P = polyshape(xb,yb); 
-% 
-% readme = 'written by termpicks2mask_v3.m'; 
-% %save('greenland_rock_polyshape.mat','P','readme')
-
-%%
-
 ice = land; 
 for k = 1:length(t)
     ice(:,:,k) = land(:,:,k).*(~rock); 
 end
 disp([datestr(now),' Saving NetCDF now...'])
 
+clear land 
 %% Save data 
 
 % 1. Create netCDF file handle and Attributes
