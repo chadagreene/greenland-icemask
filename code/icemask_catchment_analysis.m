@@ -10,8 +10,8 @@
 
 %% Load data 
 
-extruded_filename = 'greenland_extruded_velocity_and_thickness_2022-11-29.nc'; 
-icemask_filename = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2022-11-18_clean.nc';
+extruded_filename = 'greenland_extruded_velocity_and_thickness_2022-12-07.nc'; 
+icemask_filename = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2022-11-18_clean2.nc';
 
 x = double(ncread(extruded_filename,'x')); 
 y = double(ncread(extruded_filename,'y')); 
@@ -57,7 +57,7 @@ for k = length(t):-1:1
     end
     disp([datestr(now),' month ',num2str(k),' of ',num2str(length(t)),' complete.'])
 
-    %save('/Users/cgreene/Documents/GitHub/greenland-coastlines/data/icemask_catchment_analysis_clean.mat','t','A_ts','M_ts','M_hi_ts','readme','names','icemask_filename','extruded_filename')
+    save('/Users/cgreene/Documents/GitHub/greenland-icemask/data/icemask_catchment_analysis_clean2.mat','t','A_ts','M_ts','M_hi_ts','readme','names','icemask_filename','extruded_filename')
 end
 
 %%

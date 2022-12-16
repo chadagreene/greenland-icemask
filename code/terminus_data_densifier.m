@@ -116,7 +116,7 @@ box off
 axis tight
 
 clear yr mo tm yrtm motm sm 
-
+return
 %% Plot terminus position statistics 
 
 [yr,~,~] = datevec(t); 

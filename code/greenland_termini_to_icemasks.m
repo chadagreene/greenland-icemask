@@ -1077,14 +1077,14 @@ netcdf.putAtt(ncid,mapping_var_id,'straight_vertical_longitude_from_pole',-45);
 
 % Define x 
 x_id     = netcdf.defDim(ncid,'x',length(x));
-x_var_id = netcdf.defVar(ncid,'x','NC_INT',x_id);
+x_var_id = netcdf.defVar(ncid,'x','NC_SHORT',x_id);
 netcdf.putAtt(ncid,x_var_id,'long_name',    'Cartesian x-coordinate grid cell center');
 netcdf.putAtt(ncid,x_var_id,'standard_name','projection_x_coordinate');
 netcdf.putAtt(ncid,x_var_id,'units',        'meter');
 
 % Define y
 y_id     = netcdf.defDim(ncid,'y',length(y));
-y_var_id = netcdf.defVar(ncid,'y','NC_INT',y_id);
+y_var_id = netcdf.defVar(ncid,'y','NC_SHORT',y_id);
 netcdf.putAtt(ncid,y_var_id,'long_name',    'Cartesian y-coordinate grid cell center');
 netcdf.putAtt(ncid,y_var_id,'standard_name','projection_y_coordinate');
 netcdf.putAtt(ncid,y_var_id,'units',        'meter');

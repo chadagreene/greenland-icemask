@@ -1,5 +1,5 @@
 
-load('icemask_catchment_analysis_clean.mat') 
+load('icemask_catchment_analysis_clean2.mat') 
 names{244} = 'Ab Drachmann L Bistrup'; % just abbreviating for display purposes
 
 %% Seasonal 
@@ -13,22 +13,36 @@ M_ts_hp = M_ts - M_ts_lp;
 ind = all(isfinite(A_ts),2) & t>=datetime(1985,6,15) & t<=datetime(2021,6,15); 
 
 % ind = 154:586; % for highest confidence data June 1985 through June 2021. 
+% seasonality may be best May 2015 thru May 2021
 
 t = t(ind); 
 A_ts = A_ts(ind,:); 
 M_ts = M_ts(ind,:); 
-t=datenum(t); 
 
 M_ts_lp = M_ts_lp(ind,:); 
 M_ts_hp = M_ts_hp(ind,:); 
 
+figure
 %%
+k=k+1
+    clf
+    plot(t,M_ts(:,k),'linewidth',1)
+    hold on
+    plot(t,M_ts_lp(:,k),'linewidth',2)
+    box off
+    axis tight
+    title(names{k})
+    pause(0.2)    
 
+%%
+t=datenum(t); 
+
+ind_seas = t>=datenum(1997,5,15) & t<=datenum(2021,5,15); 
 
 M_amp = nan(1,261); 
 M_ph = M_amp; 
 for k = 1:261
-    ft = sinefit(t,M_ts_hp(:,k));
+    ft = sinefit(t(ind_seas),M_ts_hp(ind_seas,k));
     M_amp(k) = ft(1); 
     M_ph(k) = ft(2); 
 end
@@ -39,7 +53,7 @@ figure
 scatter(M_amp,dM,30,M_ph,'filled')
 caxis([0 365])
 cmocean phase 
-
+return
 %%
 
 % figure
@@ -196,8 +210,6 @@ set(gca,'xtick',xtick,'xticklabel',datestr(xtick,'yyyy'))
 
 gc = gca; 
 gc.Position(1) = 0.02;
-
-
 
 
 
