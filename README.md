@@ -41,10 +41,10 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 	* This script: 
 	
 		a. Compiles terminus position data from TermPicks ([*Goliber et al.*](https://doi.org/10.5194/tc-16-3215-2022)), CALFIN ([*Cheng et al.*](https://doi.org/10.5194/tc-15-1663-2021)), MEaSUREs v2 ([*Joughin et al.*](https://nsidc.org/data/nsidc-0642/versions/2)), and AutoTerm ([*Zhang et al.*](https://doi.org/10.5281/zenodo.7190740)). There is no terminus data in 1983. Here is the distribution of all the 63,473 terminus position picks:
-			<p align="center"><img src="figures/terminus_histograms_autoterm.jpg" width="400"/></p>
+			<p align="center"><img src="figures/terminus_histograms.jpg" width="400"/></p>
 		b. Densifies terminus position shapefiles to make about 5 points per grid cell width. Here's an example, which shows 263 datapoints in a two-segment piece of a TermPicks terminus position of Jakobshavn from March 3, 2005. The red dots are densified to 24 m spacing.
 			<p align="center"><img src="figures/terminus_densification.jpg" width="400"/></p>
-		c. Saves `terminus_data_densified_2022-11-14.mat`, which contains the densified terminus data as four simple columns of scattered data where `x` and `y` are polar stereographic meters, `t` is datenum, and `p` is a measure of data quality based on data sources and data quality flags, with highest numbers being the presumed best data.
+		c. Saves `terminus_data_densified_2023-01-09.mat`, which contains the densified terminus data as four simple columns of scattered data where `x` and `y` are polar stereographic meters, `t` is datenum, and `p` is a measure of data quality based on data sources and data quality flags, with highest numbers being the presumed best data.
 		Here are a couple examples of the data created by `terminus_data_densifier.m`: 
 		<p align="center"><img src = "figures/terminus_data_densifier_map_a.jpg" width ="200" /> <img src = "figures/terminus_data_densifier_map_b.jpg" width ="200" /></p>
 	* Requirements: 

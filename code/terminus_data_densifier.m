@@ -9,6 +9,15 @@
 
 grid_resolution = 120; % m final grid resolution (only used to determine grid_resolution/5 data density along terminus lines) 
 
+%% Load Taryn Black's data 
+
+B = shaperead('/Users/cgreene/Documents/data/coastlines/black/glacier_termini_v01.0.shp');
+B = B([B.Quality_Fl]==0);
+
+tb = datenum(datetime({B.SourceDate})); 
+procOrderb = 7*ones(size(tb)); 
+data_originb = 0*ones(size(procOrderb')); 
+
 %% Load Measures terminus data (Joughin et al) 
 % Note from Taryn Black: "I would rank flags 0 and 2 together as best, and
 % flags 1 and 3 together as second-best. Flag 0 indicates that there were no
@@ -25,6 +34,11 @@ tmp = load('/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene
 
 % Trim Joughin dataset to only 0 and 2 flags:
 J = tmp.S(ismember([tmp.S.Quality_Fl],[0 2])); 
+
+% Trim away any Joughin data that's already in the Black dataset: 
+redundant = ismember({J.Image_ID},{B.Image_ID});
+J = J(~redundant); 
+clear redundant
 
 % Make a time array: 
 tj = datenum(datetime({J.SourceDate})); 
@@ -60,10 +74,10 @@ tg = datenum(datetime([G.Year],[G.Month],[G.Day]));
 
 % Set processing order (best data is highest number) 
 procOrderg = zeros(size(tg),'uint8'); 
-procOrderg(ismember({G(:).QualFlag}',{'04';'01, 04';'02, 04';'03, 04';'04, 04';'05, 04'})) = 2; % box method (likely least accurate) 
-procOrderg(ismember({G(:).QualFlag}',{'0';'00'})) = 3; % manual, no issues 
+procOrderg(ismember({G(:).QualFlag}',{'04';'01, 04';'02, 04';'03, 04';'04, 04';'05, 04'})) = 1; % box method (likely least accurate) 
+procOrderg(ismember({G(:).QualFlag}',{'0';'00'})) = 2; % manual, no issues 
 procOrderg(strcmp({G(:).QualFlag}','05')) = 4; % automatically assigned gl id 
-procOrderg(ismember({G(:).QualFlag}',{'3';'03';'13';'01';'02'})) = 5; % slc off or otherwise uncertain 
+procOrderg(ismember({G(:).QualFlag}',{'3';'03';'13';'01';'02'})) = 3; % slc off or otherwise uncertain 
 procOrderg(strcmp({G(:).QualFlag}','10')) = 6; % calfin, no issues
 
 data_origing = 2*ones(size(procOrderg')); % TermPicks
@@ -80,23 +94,24 @@ A = A(keep);
 ta = ta(keep); 
 
 data_origina = 4*ones(size(ta)); 
-procOrdera = ones(size(ta)); 
+procOrdera = 5*ones(size(ta)); 
 
 clear sensor err keep
 %% Concatenate terminus datasets 
 
 % Remove unnecessary fields (to make them easily concatenatable): 
 J = rmfield(J,{'Geometry','BoundingBox','Image_ID','Sensor','Glacier_ID','SourceDate','Quality_Fl'});
+B = rmfield(B,{'Geometry','BoundingBox','Image_ID','Image_Tile','Glacier_ID','SourceDate','Quality_Fl'});
 G = rmfield(G,{'Geometry','BoundingBox','GlacierID','Date','Year','Month','Day','DecDate','QualFlag','Satellite','ImageID','Author','Center_X','Center_Y'});
 
 % Concatenate the datasets: 
-C = cat(1,G,J,A); 
-t = cat(2,tg,tj,ta')';
-procOrder = cat(2,procOrderg,procOrderj,procOrdera')';
+C = cat(1,G,J,A,B); 
+t = cat(2,tg,tj,ta',tb)';
+procOrder = cat(2,procOrderg,procOrderj,procOrdera',procOrderb)';
 
-data_origin = [data_origing;data_originj;data_origina]; 
+data_origin = [data_origing;data_originj;data_origina;data_originb]; 
 
-clear tg tj ta G J A fn procOrderg procOrderj procOrdera data_origing data_originj data_origina
+clear tg tj ta G J A fn procOrderg procOrderj procOrdera data_origing data_originj data_origina B procOrderb tb data_originb
 
 %% When can we analyze changes most confidently? 
 % Key takeaway: June or July 1985 to June 2021.
@@ -116,7 +131,7 @@ box off
 axis tight
 
 clear yr mo tm yrtm motm sm 
-return
+
 %% Plot terminus position statistics 
 
 [yr,~,~] = datevec(t); 
@@ -131,9 +146,9 @@ dy = doy(t);
 yr_edge = min(yr)-.5:max(yr)+.5;
 dy_edge = .5:365.5;
 
-for k = 1:4
-   counts_yr(k,:) = histcounts(yr(data_origin==k),yr_edge);
-   counts_dy(k,:) = histcounts(dy(data_origin==k),dy_edge); 
+for k = 0:4
+   counts_yr(k+1,:) = histcounts(yr(data_origin==k),yr_edge);
+   counts_dy(k+1,:) = histcounts(dy(data_origin==k),dy_edge); 
 end
 
 % ytickcolor = hex2rgb('#b6b39d'); 
@@ -144,7 +159,7 @@ end
 
 ytickcolor = hex2rgb('#9A9B99'); 
 xcolor = hex2rgb('#3E3F3D'); 
-hc = hex2rgb({'#F25F5C';'#247BA0';'#FFE066';'#70C1B3'}); 
+hc = hex2rgb({'#AA100E';'#F25F5C';'#247BA0';'#FFE066';'#70C1B3'}); 
 
 fs = 7; % fontsize 
 
@@ -155,18 +170,19 @@ hb(1).FaceColor = hc(1,:);
 hb(2).FaceColor = hc(2,:); 
 hb(3).FaceColor = hc(3,:); 
 hb(4).FaceColor = hc(4,:); 
+hb(5).FaceColor = hc(5,:); 
 axis tight 
 box off
 set(gca,'xcolor',xcolor,'fontsize',fs)
 
-h1 = hline([2000 5000:5000:20000]); 
+h1 = hline([2000 5000:5000:25000]); 
 set(h1(:),'color',ytickcolor,'linewidth',0.25); 
 uistack(h1,'bottom')
 xlim([1970 2022])
 xl = xlim; 
-txt1 = text(xl(1)*ones(size([2000 5000:5000:15000])),[2000 5000:5000:15000],num2str(([2 5:5:15])'),...
+txt1 = text(xl(1)*ones(size([2000 5000:5000:20000])),[2000 5000:5000:20000],num2str(([2 5:5:20])'),...
    'fontsize',fs,'color',ytickcolor,'horiz','left','vert','bot');
-txt1(7) = text(xl(1),20000,'20 thousand terminus positions per year',...
+txt1(7) = text(xl(1),25000,'25 thousand terminus positions per year',...
    'fontsize',fs,'color',ytickcolor,'horiz','left','vert','bot');
 set(gca,'ycolor','none','xcolor',xcolor); 
 
@@ -176,6 +192,7 @@ hb(1).FaceColor = hc(1,:);
 hb(2).FaceColor = hc(2,:); 
 hb(3).FaceColor = hc(3,:); 
 hb(4).FaceColor = hc(4,:); 
+hb(5).FaceColor = hc(5,:); 
 axis tight 
 box off
 set(gca,'xtick',datenum(0,1:12,15),'color','none','fontsize',fs,'xcolor',xcolor)
@@ -192,13 +209,13 @@ txt2(6) = text(xl(1),1200,'1200 total terminus positions per day',...
    'fontsize',fs,'color',ytickcolor,'horiz','left','vert','bot');
 set(gca,'ycolor','none','xcolor',xcolor); 
 
-ht1 = textcolorbar({'AutoTerm';'CALFIN';'TermPicks';'MEaSUREs v2'},...
+ht1 = textcolorbar({'Zhang';'Cheng';'Goliber';'Joughin v2';'Black'},...
    'colormap',flipud(hc),'location','ne','fontsize',fs,'background','w'); 
 ht1.Margin = 0.01; 
 ht1.Position(2)=.94;
 
 set(gcf,'renderer','painters')
-% exportgraphics(gcf,'/Users/cgreene/Documents/GitHub/greenland-coastlines/figures/terminus_histograms_autoterm.jpg','resolution',600)
+% exportgraphics(gcf,'/Users/cgreene/Documents/GitHub/greenland-icemask/figures/terminus_histograms.jpg','resolution',600)
 
 % housekeeping
 clear yr mo dy ax h1 h2  histcolor  fs xl txt*
@@ -294,16 +311,20 @@ clear procOrder tmp* saveExamplePlot animateDensification k kc C isf bad
 
 %% 
 
-readme = 'Compiled TermPicks+CALFIN and Joughin annual terminus positions v2, with a culled version of AutoTerm, all densified to 24 m resolution. This data was compiled by terminus_data_densifier. t is datenum, x & y are north polar stereogrpahic (ps70) meters, and p is the priority assignment based on assumed data quality, with highest numbers being the best data.'; 
+readme = 'Compiled TermPicks+CALFIN and Joughin annual terminus positions v2, with a culled version of AutoTerm, and Taryn Blacks recent 6-day and monthly positions, all densified to 24 m resolution. This data was compiled by terminus_data_densifier. t is datenum, x & y are north polar stereogrpahic (ps70) meters, and p is the priority assignment based on assumed data quality, with highest numbers being the best data.'; 
 
-% save('/Users/cgreene/Documents/GitHub/greenland-coastlines/data/terminus_data_densified_2022-11-14.mat','x','y','t','p','readme')
+% save('/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/terminus_data_densified_2023-01-09.mat','x','y','t','p','readme')
 
 %% Visual inspection 
 
 [mask,x_bm,y_bm] = bedmachine_data('mask','greenland');
 
 ind = 1:2:length(x); 
-yr = year(double(t)); 
+try
+    yr = year(double(t)); 
+catch
+    [yr,~,~,] = datevec(double(t)); 
+end
 
 figure('pos',[ 3    57   888   890])
 subplot(1,2,1)
@@ -314,7 +335,7 @@ axis image off
 fastscatter(x(ind),y(ind),yr(ind),'markersize',1)
 cmocean thermal
 colorbar('location','south')
-clim([1985 2022])
+caxis([1985 2022])
 ax = gca; 
 
 subplot(1,2,2)
@@ -327,11 +348,11 @@ ax(2) = gca;
 label_greenland_glaciers('fontsize',9)
 
 cb = colorbar('south');
-set(cb,'xtick',1:7,'xticklabel',{'AutoTerm';'box';'manual';'auto id';'slc off';'CALFIN';'MEaSUREs'},'fontsize',7)
-clim([.5 7.5])
+set(cb,'xtick',1:7,'xticklabel',{'box';'manual';'slc off';'auto id';'AutoTerm';'CALFIN';'MEaSUREs'},'fontsize',7)
+caxis([.5 7.5])
 colormap(gca,parula(7))
 linkaxes(ax,'xy')
-
+return
 %% Repeat above for an example image 
 
 figa = true; % figure a or b 
