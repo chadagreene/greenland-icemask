@@ -1,12 +1,15 @@
 
-load('icemask_catchment_analysis_clean2.mat') 
+load('icemask_catchment_analysis_2023-01-24.mat') 
 names{244} = 'Ab Drachmann L Bistrup'; % just abbreviating for display purposes
 
+load('/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/active_ice_mask_2023-01-24.mat','active_ice')
 %% Seasonal 
 
 M_ts_lp = movmean(M_ts,12); 
 M_ts_hp = M_ts - M_ts_lp; 
 
+M_mean = mean(M_ts); 
+A_mean = mean(A_ts); 
 
 %%
 % 
@@ -49,11 +52,50 @@ end
 
 dM = (M_ts(end,:)-M_ts(1,:)); 
 
-figure
-scatter(M_amp,dM,30,M_ph,'filled')
+%%
+
+A_thresh = 4e10; 
+
+
+figure('pos',[40 40 428 372])
+scatter(M_amp,-dM,8,M_ph,'filled')
 caxis([0 365])
 cmocean phase 
-return
+
+set(gca,'xscale','log','yscale','log')
+set(gca,'ydir','reverse')
+xlabel('Amplitude of seasonal mass variability (Gt)','fontsize',8)
+ylabel('Mass loss from 1985 to 2021 (Gt)','fontsize',8)
+axis tight
+%xlim([5e-5 1e1])
+axis([3e-6 33 8e-5 322])
+set(gca,'fontsize',8)
+
+%txt = text(M_amp(A_mean>A_thresh),-dM(A_mean>A_thresh),names(A_mean>A_thresh),'fontsize',5,'color',.8*[1 1 1],'horiz','center','vert','bot','clipping','on','fontangle','italic'); 
+%uistack(txt,'bottom')
+
+h_pb = itslive_phasebar('location','sw','color','w','centertext',{'Time of';'max extent'});
+
+h_pb_ch = get(h_pb,'children'); 
+set(h_pb_ch(1),'color','k')
+
+%export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/catchment_mass_change_seasonality_scatter.jpg','-r600','-p0.01')
+
+%%
+
+extruded_filename = 'greenland_extruded_velocity_and_thickness_2022-12-15.nc'; 
+
+x = double(ncread(extruded_filename,'x')); 
+y = double(ncread(extruded_filename,'y')); 
+catchment = double(permute(ncread(extruded_filename,'catchment'),[2 1])); 
+
+th = permute(ncread(extruded_filename,'thickness'),[2 1]); 
+
+H = nan(1,261); 
+for k=1:length(H)
+    H(k) = mean(th(th>0 & catchment==k)); 
+end
+
 %%
 
 % figure
@@ -71,15 +113,15 @@ A_sum = sum(A_ts-A_ts(1,:),2)/(1000^2);
 % box off
 % axis tight
 % text((A_ts(end,:)-A_ts(1,:))/1000^2,M_ts(end,:)-M_ts(1,:),names,'fontsize',7,'vert','bot','horiz','center'); 
-
+return
 %%
 if false 
 dM = (M_ts(end,:)-M_ts(1,:)); 
 
 f0 = find(dM==0); 
 
-extruded_filename = 'greenland_extruded_velocity_and_thickness_2022-11-29.nc'; 
-icemask_filename = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2022-11-18.nc';
+extruded_filename = 'greenland_extruded_velocity_and_thickness_2022-12-15.nc'; 
+icemask_filename = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-01-24.nc';
 
 x = double(ncread(extruded_filename,'x')); 
 y = double(ncread(extruded_filename,'y')); 
@@ -89,7 +131,7 @@ catchment = double(permute(ncread(extruded_filename,'catchment'),[2 1]));
 
 ice = permute(logical(ncread(icemask_filename,'ice',[1 1 500],[Inf Inf 1])),[2 1]);
 
-fn_term = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/terminus_data_densified_2022-11-14.mat';
+fn_term = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/terminus_data_densified_2023-01-09.mat';
 T = load(fn_term); 
 
 figure
@@ -99,10 +141,15 @@ hold on
 plot(T.x(1:3:end),T.y(1:3:end),'r.')
 end
 %%
-if false
+if true
 dM_map = nan(size(ice)); 
+M_amp_map = nan(size(ice)); 
+M_ph_map = nan(size(ice)); 
 for k = 1:261
     dM_map(catchment==k & ice) = dM(k); 
+    M_amp_map(catchment==k & ice) = M_amp(k); 
+    M_ph_map(catchment==k & ice) = M_ph(k); 
+    k
 end
 
 figure
@@ -112,6 +159,75 @@ hold on
 colorbar
 caxis([-1 1]*max(abs(dM)))
 cmocean -bal
+
+%%
+figure
+ax = axes('position',[0.1 .5 .5 .5]);
+him = imagescn(x,y,M_amp_map);
+bedmachine('gl','color',rgb('gray'),'linewidth',.3,'greenland')
+hold on
+cb = colorbar('location','eastoutside','fontsize',6,'tickdirection','out'); 
+ylabel(cb,'seasonal amplitude (Gt)','fontsize',6)
+cb(1).Position = [0.45 0.5 0.01 0.2];
+caxis([0 1]*max(abs(M_amp)))
+cmocean amp
+axis off
+
+
+ax(2) = axes('position',[0.4 .5 .5 .5]);
+imagescn(x,y,dM_map)
+bedmachine('gl','color',rgb('gray'),'linewidth',.3,'greenland')
+hold on
+cb(2) = colorbar('location','eastoutside','fontsize',6,'tickdirection','out'); 
+ylabel(cb(2),'Mass change from 1985 to 2021 (Gt)','fontsize',6)
+cb(2).Position = [0.75 0.5 0.01 0.2];
+caxis([-1 1]*max(abs(dM)))
+cmocean -bal
+axis off
+
+ax(3) = axes('position',[0.1 .0 .5 .5]);
+hh = imagescn(x,y,M_ph_map);
+bedmachine('gl','color',rgb('gray'),'linewidth',.3,'greenland')
+hold on
+caxis([0 365])
+cmocean phase 
+axis off
+alph = M_amp_map/4; 
+alph(alph>1) = 1; 
+alph(alph<0) = 0; 
+alph(isnan(alph)) = 0; 
+hh.AlphaData = alph; 
+axis off 
+h_pb = itslive_phasebar('location','se','size',0.4,'color','w','centertext',{'Time of';'max extent'},'fontsize',6);
+h_pb.Position = [.39 0 .1 .2]; 
+
+h_pb_ch = get(h_pb,'children'); 
+set(h_pb_ch(1),'color','k')
+
+ax(4) = axes('position',[.55 .05 .3 .4]);
+
+scatter(M_amp,-dM,5,M_ph,'filled')
+%set(gca,'yaxislocation','right','xaxislocation','top')
+caxis([0 365])
+cmocean phase 
+
+set(gca,'xscale','log','yscale','log')
+%set(gca,'ydir','reverse')
+xlabel('Amplitude of seasonal mass variability (Gt)','fontsize',7)
+ylabel('Mass loss from 1985 to 2021 (Gt)','fontsize',7)
+axis tight
+%xlim([5e-5 1e1])
+axis([3e-6 33 8e-5 322])
+set(gca,'fontsize',7,'color','none')
+
+%txt = text(M_amp(A_mean>A_thresh),-dM(A_mean>A_thresh),names(A_mean>A_thresh),'fontsize',5,'color',.8*[1 1 1],'horiz','center','vert','bot','clipping','on','fontangle','italic'); 
+%uistack(txt,'bottom')
+% 
+% h_pb = itslive_phasebar('location','sw','color','w','centertext',{'Time of';'max extent'});
+% 
+% h_pb_ch = get(h_pb,'children'); 
+% set(h_pb_ch(1),'color','k')
+export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/catchment_mass_change_seasonality_test.jpg','-r600','-p0.01')
 end
 %%
 

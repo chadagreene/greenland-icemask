@@ -2,18 +2,20 @@
 
 
 % Ice masks: 
-fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2022-11-18.nc';
+fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-02-22.nc';
 x = double(ncread(fn,'x'));
 y = double(ncread(fn,'y'));
 t = ncdateread(fn,'time');
+t = datetime(1972,9,15):calmonths(1):datetime(2022,02,15);
+
 tdn = datenum(t); 
 
-D = load('terminus_data_densified_2022-11-14.mat');
+D = load('terminus_data_densified_2023-01-09.mat');
 color = parula(7); 
 
 %%
-
-for kd = 1:295
+%for kd=278
+for kd = 151:295
    clear A
    close all
    
@@ -32,8 +34,11 @@ for kd = 1:295
    end
    
    
-   
-   buf = 5e3; 
+   if kd==102
+       buf=15e3;
+   else
+       buf = 5e3; 
+   end
    xl = [min([A.X]) max([A.X])] + buf*[-1 1];
    yl = [min([A.Y]) max([A.Y])] + buf*[-1 1];
    
@@ -83,22 +88,20 @@ for kd = 1:295
    end
    
    
-   vf = VideoWriter(['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/animations_quality_check/greenland_icemask_synthesized_GID',num2str(kd),'_2022-11-18.mp4'],'MPEG-4');
+   vf = VideoWriter(['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/animations_quality_check/greenland_icemask_synthesized_GID',num2str(kd),'_2023-02-22.mp4'],'MPEG-4');
    vf.FrameRate = 12; 
    vf.Quality = 100; 
    open(vf)
    
-   
-   
    for k = 1:length(t)
       
-      txt.String = num2str(year(t(k)));
+      txt.String = datestr(t(k),'yyyy-mm-dd');
       h.CData = ice_tmp(:,:,k); 
    
       ind = D.x>xl(1) & D.x<xl(2) & D.y>yl(1) & D.y<yl(2) & D.t>(tdn(k)-16) & D.t<(tdn(k)+16) & D.p==1; 
       set(pl1,'xdata',D.x(ind),'ydata',D.y(ind))
       if any(ind)
-         lab(1).String = 'AutoTerm'; 
+         lab(1).String = 'box'; 
       else
          lab(1).String = ''; 
       end
@@ -106,7 +109,7 @@ for kd = 1:295
       ind = D.x>xl(1) & D.x<xl(2) & D.y>yl(1) & D.y<yl(2) & D.t>(tdn(k)-16) & D.t<(tdn(k)+16) & D.p==2; 
       set(pl2,'xdata',D.x(ind),'ydata',D.y(ind))
       if any(ind)
-         lab(2).String = 'box'; 
+         lab(2).String = 'manual'; 
       else
          lab(2).String = ''; 
       end
@@ -114,7 +117,7 @@ for kd = 1:295
       ind = D.x>xl(1) & D.x<xl(2) & D.y>yl(1) & D.y<yl(2) & D.t>(tdn(k)-16) & D.t<(tdn(k)+16) & D.p==3; 
       set(pl3,'xdata',D.x(ind),'ydata',D.y(ind))
       if any(ind)
-         lab(3).String = 'manual'; 
+         lab(3).String = 'slc-off'; 
       else
          lab(3).String = ''; 
       end
@@ -130,7 +133,7 @@ for kd = 1:295
       ind = D.x>xl(1) & D.x<xl(2) & D.y>yl(1) & D.y<yl(2) & D.t>(tdn(k)-16) & D.t<(tdn(k)+16) & D.p==5; 
       set(pl5,'xdata',D.x(ind),'ydata',D.y(ind))
       if any(ind)
-         lab(5).String = 'slc off'; 
+         lab(5).String = 'AutoTerm'; 
       else
          lab(5).String = ''; 
       end
@@ -146,7 +149,7 @@ for kd = 1:295
       ind = D.x>xl(1) & D.x<xl(2) & D.y>yl(1) & D.y<yl(2) & D.t>(tdn(k)-16) & D.t<(tdn(k)+16) & D.p==7; 
       set(pl7,'xdata',D.x(ind),'ydata',D.y(ind))
       if any(ind)
-         lab(7).String = 'Joughin'; 
+         lab(7).String = 'MEaSUREs'; 
       else
          lab(7).String = ''; 
       end
@@ -156,7 +159,6 @@ for kd = 1:295
       drawnow
       %pause(1/24)
    
-         
       
       frame=getframe(gcf); 
       %frame = export_fig('-nocrop','-r200'); 

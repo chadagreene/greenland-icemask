@@ -425,3 +425,24 @@ scalebarpsn('location','sw')
 
 end
 
+%%
+
+T = load('terminus_data_densified_2023-01-09.mat','t'); 
+
+spacing_m = 120/5; % along-path spacing of the densified terminus data is 5 points per grid cell. 
+t = datenum(datetime(1972,9,15):calmonths(1):datetime(2022,2,15));
+[yr,mo,~] = datevec(t); 
+
+[yr_data,mo_data,~] = datevec(double(T.t)); 
+
+obs_km = nan(size(t)); 
+for k=1:length(t)
+    obs_km(k) = sum(yr_data==yr(k) & mo_data==mo(k))*spacing_m/1000; 
+end
+
+figure
+bar(datetime(t,'convertfrom','datenum'),obs_km)
+axis tight
+box off
+ylabel('Terminus observation data per month (km)')
+
