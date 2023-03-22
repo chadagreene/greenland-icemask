@@ -1,12 +1,13 @@
 
 
 
+
 % Ice masks: 
-fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-02-22.nc';
+fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-03-22.nc';
 x = double(ncread(fn,'x'));
 y = double(ncread(fn,'y'));
 t = ncdateread(fn,'time');
-t = datetime(1972,9,15):calmonths(1):datetime(2022,02,15);
+%t = datetime(1972,9,15):calmonths(1):datetime(2022,02,15);
 
 tdn = datenum(t); 
 
@@ -88,7 +89,7 @@ for kd =1:295
    end
    
    
-   vf = VideoWriter(['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/animations_quality_check/greenland_icemask_synthesized_GID',num2str(kd),'_2023-02-22.mp4'],'MPEG-4');
+   vf = VideoWriter(['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/animations_quality_check/greenland_icemask_synthesized_GID',num2str(kd),'_2023-03-22.mp4'],'MPEG-4');
    vf.FrameRate = 12; 
    vf.Quality = 100; 
    open(vf)
@@ -155,7 +156,6 @@ for kd =1:295
       end
    
    
-      
       drawnow
       %pause(1/24)
    
