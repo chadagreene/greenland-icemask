@@ -16,7 +16,7 @@ color = parula(7);
 
 %%
 %for kd=278
-for kd =1:295
+for kd =90:295
    clear A
    close all
    
@@ -35,7 +35,7 @@ for kd =1:295
    end
    
    
-   if ismember(kd,[91 102 178])
+   if ismember(kd,[90 91 102 178])
        buf=40e3;
    else
        buf = 5e3; 
