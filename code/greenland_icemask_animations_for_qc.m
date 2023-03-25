@@ -1,7 +1,6 @@
 
 
 
-
 % Ice masks: 
 fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-03-22.nc';
 x = double(ncread(fn,'x'));
@@ -16,7 +15,7 @@ color = parula(7);
 
 %%
 %for kd=278
-for kd =90:295
+for kd =267:295
    clear A
    close all
    
