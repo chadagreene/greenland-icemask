@@ -2,10 +2,12 @@
 
 
 % Ice masks: 
-fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-03-22.nc';
+fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-03-27.nc';
 x = double(ncread(fn,'x'));
 y = double(ncread(fn,'y'));
 t = ncdateread(fn,'time');
+catchment = permute(ncread(fn,'catchment'),[2 1]); 
+
 %t = datetime(1972,9,15):calmonths(1):datetime(2022,02,15);
 
 tdn = datenum(t); 
@@ -13,36 +15,27 @@ tdn = datenum(t);
 D = load('terminus_data_densified_2023-01-09.mat');
 color = parula(7); 
 
+% catchi = zeros(size(D.x),'uint8'); 
+% for k = 1:260
+%     catchi(interp2(x,y,bwareafilt(catchment==k,1),D.x,D.y,'nearest')) = k; 
+%     k
+% end
+load testcatch
+
 %%
 %for kd=278
-for kd =267:295
-   clear A
+for kd =110:260
+   %clear A
    close all
    
-   S_tmp = m_shaperead(['/Users/cgreene/Documents/data/coastlines/AutoTerm/GID',num2str(kd),'.shp']);
-   t_tmp = S_tmp.dbfdata(:,1);
-   
-   for sk = 1:length(t_tmp)
-   
-      [A(sk,1).X,A(sk,1).Y] = ll2psn(S_tmp.ncst{sk}(:,2),S_tmp.ncst{sk}(:,1)); 
-   
-   end
-   
-   for k=1:length(A) 
-      A(k).X = A(k).X'; 
-      A(k).Y = A(k).Y'; 
-   end
-   
-   
-   if ismember(kd,[90 91 102 178])
-       buf=40e3;
-   else
-       buf = 5e3; 
-   end
-   xl = [min([A.X]) max([A.X])] + buf*[-1 1];
-   yl = [min([A.Y]) max([A.Y])] + buf*[-1 1];
-   
-   %
+ if kd==59
+     buf = 20e3;
+ else
+   buf= 5e3; 
+ end
+   try
+   xl = [min(D.x(catchi==kd)) max(D.x(catchi==kd))] + buf*[-1 1];
+   yl = [min(D.y(catchi==kd)) max(D.y(catchi==kd))] + buf*[-1 1];
    
    % Region of rows and columns of pixels to read: 
    ci=find((y>=yl(1))&(y<=yl(2)));
@@ -87,8 +80,7 @@ for kd =267:295
       lab(k) = text(xtxt(k),0,'','horiz','center','vert','bot','backgroundcolor',.5*[1 1 1],'color',color(k,:),'fontweight','bold','units','normalized','fontsize',14);
    end
    
-   
-   vf = VideoWriter(['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/animations_quality_check/greenland_icemask_synthesized_GID',num2str(kd),'_2023-03-22.mp4'],'MPEG-4');
+   vf = VideoWriter(['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/animations_quality_check/greenland_icemask_',num2str(kd,'%03.f'),'_2023-03-27.mp4'],'MPEG-4');
    vf.FrameRate = 12; 
    vf.Quality = 100; 
    open(vf)
@@ -166,4 +158,5 @@ for kd =267:295
    end
    
    close(vf)
+   end
 end
