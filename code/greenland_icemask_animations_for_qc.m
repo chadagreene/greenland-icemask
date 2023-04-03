@@ -24,7 +24,7 @@ load testcatch
 
 %%
 %for kd=278
-for kd =110:260
+for kd =247:260
    %clear A
    close all
    
