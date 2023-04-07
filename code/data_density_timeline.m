@@ -2,23 +2,25 @@
 
 %% Load data 
 
-load('icemask_catchment_analysis_2023-01-24.mat','names') 
+load('/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_catchments_2023-04-06.mat')
+
+% load('icemask_catchment_analysis_2023-01-24.mat','names') 
 names{244} = 'Ab Drachmann L Bistrup'; % just abbreviating for display purposes
-
-
-% Ice masks: 
-fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-03-22.nc';
-x = double(ncread(fn,'x'));
-y = double(ncread(fn,'y'));
-t = ncdateread(fn,'time');
-%t = datetime(1972,9,15):calmonths(1):datetime(2022,02,15);
-
-obs = ncread(fn,'observation_data')';
+% 
+% 
+% % Ice masks: 
+% fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-03-22.nc';
+% x = double(ncread(fn,'x'));
+% y = double(ncread(fn,'y'));
+% t = ncdateread(fn,'time');
+% %t = datetime(1972,9,15):calmonths(1):datetime(2022,02,15);
+% 
+% obs = ncread(fn,'observation_data')';
 
 %% Plot data 
 cm = cmocean('dense'); 
-s1 = sum(obs); 
-s2 = sum(obs'); 
+s1 = sum(obs_km'); 
+s2 = sum(obs_km); 
 
 fs = 7;
 %dind = [1 34:60:590 594]; 
@@ -30,7 +32,7 @@ figure
 
 ax = axes;
 ax.Position = [.05 .1 .6 .7];
-imagescn(datenum(t),1:261,obs)
+imagescn(datenum(t),1:261,obs_km')
 cmocean dense
 set(gca,'colorscale','log')
 caxis([1 500])
@@ -41,7 +43,7 @@ ylabel('Catchment ID','fontsize',fs)
 ylim([0.5 261])
 
 ax(2) = axes('position',[.05 .8 .6 .15]); 
-bar(t,s1/1000,1,'facecolor',cm(end,:),'edgecolor','none','facealpha',1)
+bar(t,s1/1000,1,'facecolor',cm(end,:),'edgecolor',cm(end,:),'facealpha',1)
 box off
 axis tight 
 set(gca,'xtick',[],'fontsize',fs)
@@ -50,7 +52,7 @@ ntitle({' Total monthly observations';' (thousands of km)'},'location','nw','fon
 
 
 ax(3) = axes('position',[.65 .1 .15 .7]); 
-barh(1:261,s2/1000,1,'facecolor',cm(end,:),'edgecolor','none','facealpha',1)
+barh(1:261,s2/1000,1,'facecolor',cm(end,:),'edgecolor',cm(end,:),'facealpha',1)
 box off
 axis tight 
 set(gca,'ytick',[],'fontsize',fs,'xcolor','none')
@@ -68,4 +70,4 @@ for k = 1:length(tmp)
     txt(k) = text(s2(tmp(k))/1000,tmp(k),names{tmp(k)},'horiz','left','vert','mid','fontangle','italic','color',txtcol,'fontsize',fs-1); 
 end
 
-export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/datadensity_timeline.jpg','-r900','-p0.01')
+%export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/datadensity_timeline.jpg','-r900','-p0.01')

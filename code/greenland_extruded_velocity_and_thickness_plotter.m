@@ -7,7 +7,7 @@
 
 %%  Load data 
 
-filename = 'greenland_extruded_velocity_and_thickness_2022-12-15.nc'; 
+filename = 'greenland_extruded_velocity_and_thickness_2023-04-06.nc'; 
 
 x = ncread(filename,'x'); 
 y = ncread(filename,'y'); 
@@ -201,7 +201,7 @@ hs(2).LineWidth = 1;
 set(gcf,'color','k')
 % goal width 7.2 in = 183 mm
 
-%export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_velocity_and_thickness_2022-12-15.jpg','-r600')
+%export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_velocity_and_thickness_2023-04-06.jpg','-r600')
 
 %%
 
@@ -246,7 +246,7 @@ axis(zl)
 [hs(1),ht(1)] = scalebarpsn('location','se','fontsize',fsl,'color','k');
 hs(1).LineWidth = 1; 
 
-% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_thickness_error_2022-12-15.jpg','-r600')
+% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_thickness_error_2023-04-06.jpg','-r600')
 
 %%
 
@@ -282,4 +282,4 @@ axis(zl)
 [hs(1),ht(1)] = scalebarpsn('location','se','fontsize',fsl,'color','k');
 hs(1).LineWidth = 1; 
 
-% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_basins_2022-12-15.jpg','-r600')
+% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_basins_2023-04-06.jpg','-r600')

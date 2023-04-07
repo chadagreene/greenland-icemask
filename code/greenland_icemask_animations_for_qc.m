@@ -2,7 +2,7 @@
 
 
 % Ice masks: 
-fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-03-27.nc';
+fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_ice_masks_1972-2022_v0.nc';
 x = double(ncread(fn,'x'));
 y = double(ncread(fn,'y'));
 t = ncdateread(fn,'time');
@@ -24,18 +24,25 @@ load testcatch
 
 %%
 %for kd=278
-for kd =247:260
+for kd =256:260
    %clear A
    close all
    
- if kd==59
-     buf = 20e3;
- else
+
    buf= 5e3; 
- end
+
    try
    xl = [min(D.x(catchi==kd)) max(D.x(catchi==kd))] + buf*[-1 1];
    yl = [min(D.y(catchi==kd)) max(D.y(catchi==kd))] + buf*[-1 1];
+
+   % Make the frame square: 
+   dxl = diff(xl); 
+   dyl = diff(yl); 
+   if dxl>dyl
+       yl = mean(yl) + dxl.*[-1 1]/2;
+   else
+       xl = mean(xl) + dyl.*[-1 1]/2; 
+   end
    
    % Region of rows and columns of pixels to read: 
    ci=find((y>=yl(1))&(y<=yl(2)));
@@ -80,7 +87,7 @@ for kd =247:260
       lab(k) = text(xtxt(k),0,'','horiz','center','vert','bot','backgroundcolor',.5*[1 1 1],'color',color(k,:),'fontweight','bold','units','normalized','fontsize',14);
    end
    
-   vf = VideoWriter(['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/animations_quality_check/greenland_icemask_',num2str(kd,'%03.f'),'_2023-03-27.mp4'],'MPEG-4');
+   vf = VideoWriter(['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/animations_quality_check/greenland_ice_masks_1972-2022_v1_',num2str(kd,'%03.f'),'.mp4'],'MPEG-4');
    vf.FrameRate = 12; 
    vf.Quality = 100; 
    open(vf)
