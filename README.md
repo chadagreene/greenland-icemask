@@ -92,8 +92,9 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 * **`remove_icebergs`** finds bits of ice that detach from the ice sheet, and removes them from a land mask cube. 
 * **`stream2_fast`** is an edited version of Matlab's built-in `stream2` function. The main difference is that `stream2_fast` doesn't waste time sorting input x and y coordinates (which accounts for about half of the processing time of `stream2` the way it's used in this work.)
 	
-# Notes 
-The `data`, `code`, and `figures` folders each contain a subfolder called `old`. The contents of the `old` folders are just early drafts of this work, and they aren't necessary to replicate or interpret our results in any way. 
+# Quality control 
+Here's an animation of the final product: 
+[![Calving animation](https://i.ytimg.com/vi/zQcJ74KYc84/maxresdefault.jpg)](https://www.youtube.com/watch?v=zQcJ74KYc84 "Greenland Ice Sheet glacier terminus retreat, 1972–2022")
 
 # Citation 
 If you use this data, please cite our paper! Check back here soon or contact me personally for citation information. 
