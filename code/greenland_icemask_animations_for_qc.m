@@ -1,8 +1,7 @@
 
 
-
 % Ice masks: 
-fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_ice_masks_1972-2022_v0.nc';
+fn = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_ice_masks_1972-2022_v1.nc';
 x = double(ncread(fn,'x'));
 y = double(ncread(fn,'y'));
 t = ncdateread(fn,'time');
@@ -22,9 +21,11 @@ color = parula(7);
 % end
 load testcatch
 
+load('greenland_catchments_2023-04-06.mat','names')
+
 %%
-%for kd=278
-for kd =256:260
+
+for kd =[248:260 1:100]
    %clear A
    close all
    
@@ -56,7 +57,7 @@ for kd =256:260
    
    %
    
-   figure('color',0*[1 1 1],'position',[28    87   931   782]); 
+h_fig =    figure('Visible','off','color',0*[1 1 1],'position',[28    87   931   782]); 
    h = imagescn(x_tmp,y_tmp,ice_tmp(:,:,1)); 
    h.AlphaData = ~rock_tmp; 
    axis image off
@@ -69,7 +70,7 @@ for kd =256:260
    hold on
    hh=image(xx,yy,Itmp(:,:,1:3));
    uistack(hh,'bottom'); 
-   set(gca,'pos',[0 0 1 1])
+   set(gca,'pos',[0 0 1 1],'color','none')
    
    scalebarpsn('location','se')
    pl1 = plot(mean(xl),mean(yl),'.','color',color(1,:)); % empty placeholder for now
@@ -86,7 +87,10 @@ for kd =256:260
    for k=1:7
       lab(k) = text(xtxt(k),0,'','horiz','center','vert','bot','backgroundcolor',.5*[1 1 1],'color',color(k,:),'fontweight','bold','units','normalized','fontsize',14);
    end
-   
+
+   ntitle(['Catchment #',num2str(kd)],'location','nw','fontweight','bold','fontsize',14,'color',.9*[1 1 1],'backgroundcolor','k'); 
+   ntitle(names{kd},'location','ne','fontweight','bold','fontsize',14,'color',.9*[1 1 1],'backgroundcolor','k'); 
+
    vf = VideoWriter(['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/animations_quality_check/greenland_ice_masks_1972-2022_v1_',num2str(kd,'%03.f'),'.mp4'],'MPEG-4');
    vf.FrameRate = 12; 
    vf.Quality = 100; 
@@ -167,3 +171,29 @@ for kd =256:260
    close(vf)
    end
 end
+
+%% Create a compiled animation from the individual glacier animations. 
+% takes 1 hour. 
+
+fn_combo = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_ice_masks_1972-2022_v1_QC_animations.mp4';
+
+vf = VideoWriter(fn_combo,'MPEG-4'); 
+vf.FrameRate = 12; 
+vf.Quality = 100; 
+open(vf)
+
+tic
+for kd = 1:262
+    fn = ['/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_ice_masks_1972-2022_v1_QC_animations/greenland_ice_masks_1972-2022_v1_',num2str(kd,'%03.f'),'.mp4']
+    if exist(fn,'file')
+        v = VideoReader(fn); 
+        while hasFrame(v)
+            writeVideo(vf,readFrame(v));
+        end
+    end
+end
+toc 
+close(vf)
+
+
+

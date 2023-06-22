@@ -1,8 +1,8 @@
 
-load('icemask_catchment_analysis_2023-01-24.mat') 
+load('icemask_catchment_analysis_1972-2022_v1.mat') 
 names{244} = 'Ab Drachmann L Bistrup'; % just abbreviating for display purposes
 
-load('/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/active_ice_mask_2023-01-24.mat','active_ice')
+%load('/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/active_ice_mask_2023-01-24.mat','active_ice')
 %% Seasonal 
 
 M_ts_lp = movmean(M_ts,12); 
@@ -13,7 +13,8 @@ A_mean = mean(A_ts);
 
 %%
 % 
-ind = all(isfinite(A_ts),2) & t>=datetime(1985,6,15) & t<=datetime(2021,6,15); 
+t = datetime(t,'convertfrom','datenum'); 
+ind = all(isfinite(A_ts),2) & t>=datetime(1985,8,15) & t<=datetime(2022,1,15); 
 
 % ind = 154:586; % for highest confidence data June 1985 through June 2021. 
 % seasonality may be best May 2015 thru May 2021
@@ -40,7 +41,7 @@ k=k+1
 %%
 t=datenum(t); 
 
-ind_seas = t>=datenum(1997,5,15) & t<=datenum(2021,5,15); 
+ind_seas = t>=datenum(2013,6,15) & t<=datenum(2021,6,15); 
 
 M_amp = nan(1,261); 
 M_ph = M_amp; 
@@ -53,7 +54,7 @@ end
 dM = (M_ts(end,:)-M_ts(1,:)); 
 
 %%
-
+addpath('/Users/cgreene/Documents/MATLAB/data_testing'); 
 A_thresh = 4e10; 
 
 
@@ -120,8 +121,8 @@ dM = (M_ts(end,:)-M_ts(1,:));
 
 f0 = find(dM==0); 
 
-extruded_filename = 'greenland_extruded_velocity_and_thickness_2022-12-15.nc'; 
-icemask_filename = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_monthly_ice_masks_2023-01-24.nc';
+extruded_filename = 'greenland_extruded_velocity_and_thickness_2023-04-06.nc'; 
+icemask_filename = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/greenland_.nc';
 
 x = double(ncread(extruded_filename,'x')); 
 y = double(ncread(extruded_filename,'y')); 
@@ -302,7 +303,7 @@ for k = 1:Nlo
     txt_lo(k).FontSize = txtsiz(k); 
     %txt_lo(k).Color = cm_lo(k,:); 
 end
-
+ylim([-1060 5])
 textborder(t(end)+50,M_sum(end),'Greenland ',linecol,shadowcol,'fontname','Helvetica','fontsize',7,'fontweight','bold','horiz','left','vert','mid')
 
 %
@@ -316,18 +317,19 @@ txt = text(xl(1)*ones(length(-2000:100:200),1),(-2000:100:200)',num2str((-2000:1
 uistack(txt(:),'bottom')
 %txt(end).String = '+20\times1000 km^2'; 
 %txt(end-1).String = '+10'; 
-txt(22).String = '+100 Gt'; 
-%txt(11).String = ''; 
+%txt(22).String = '+100 Gt'; 
+txt(21).String = ''; 
+txt(11).String = '-1000 Gt';
 text(xl(1),yl(end),'Cumulative mass change due to glacier retreat since 1985','fontsize',7,'horiz','left','vert','bot','fontweight','bold','color',.1*[1 1 1])
 set(gca,'ycolor','none','xcolor',.15*[1 1 1])
 axis(ax)
-xtick = datenum(1985:2:2021,6,15); 
+xtick = datenum(1986:2:2022,1,1); 
 set(gca,'xtick',xtick,'xticklabel',datestr(xtick,'yyyy'))
 
 gc = gca; 
 gc.Position(1) = 0.02;
 
-
+% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_cumulative_masschange_1985-2021.jpg','-r900','-p0.01')
 
 %% SUBFUNCTION 
 

@@ -142,7 +142,7 @@ dy = doy(t);
 [sum(yr>=1972 & data_origin==4) sum(yr>=1972 & data_origin==3) sum(yr>=1972 & data_origin==2) sum(yr>=1972 & data_origin==1)]
 [sum(yr>=1985 & data_origin==4) sum(yr>=1985 & data_origin==3) sum(yr>=1985 & data_origin==2) sum(yr>=1985 & data_origin==1)]
 
-
+return
 yr_edge = min(yr)-.5:max(yr)+.5;
 dy_edge = .5:365.5;
 
