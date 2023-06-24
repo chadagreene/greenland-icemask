@@ -78,15 +78,13 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 	* Requirements: 
 		* [`gridbin`](https://github.com/chadagreene/gridbin), which efficiently bins scattered data into a 2D grid. 
 		* `filt2` from Climate Data Toolbox for MATLAB to lowpass filter the GIMP mask before interpolating. 
-	
-1. **`greenland_icemask_analysis_secular.m`** analyzes ice mask for overall secular changes in mass and area. 
-			<p align="center"><img src="figures/greenland_masschange_timeseries.jpg" width="400"/></p>
-			
-1. **`greenland_icemask_analysis_seasonal.m`** analyzes ice mask for sesonality. 
-			<p align="center"><img src="figures/mask_sinefit_example.jpg" width="400"/></p>
-	
+		
 **`greenland_icemask_animations_for_qc.m`** creates glacier-by-glacier animations for quality control checks. These animations plot the final icemask along with the glacier pick data that went into them. 	
+**`icemask_catchment_analysis.m`** creates `icemask_catchment_analysis_1972-2022_v1.mat`, which contains a time series of area and mass by basin for the entire ice sheet. This script is very inefficient and takes about two days to run. 
 	
+**`ice_catchment_area_mass_timeseries_analysis.m`** analyzes the time series in `icemask_catchment_analysis_1972-2022_v1.mat` to quantify total area and mass changes on decadal and seasonal timescales. Also creates this plot: 
+			<p align="center"><img src="figures/greenland_seasonal_area_mass_anomalies.jpg" width="400"/></p>
+ 
 ### Functions	
 * **`terminus_masker_advect`** performs the heavy lifting of synthetically advecting terminus positions upstream and downstream to create a time-evolving monthly mask. 
 * **`remove_icebergs`** finds bits of ice that detach from the ice sheet, and removes them from a land mask cube. 
