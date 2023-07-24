@@ -137,7 +137,6 @@ end
 %% 
 
 outlet_deepest = nan(size(flux)); 
-shallowest_fjord = nan(size(flux)); 
 
 x_deep = nan(size(flux)); 
 y_deep = nan(size(flux)); 
@@ -360,6 +359,7 @@ hm.XDisplayLabels = lab;
 hm.YDisplayLabels = lab; 
 hm.CellLabelFormat = '%.2f';
 hm.CellLabelColor = 1*[1 1 1];
+hm.FontSize = 5; 
 
 ax = gca; 
 axp = struct(ax); 
