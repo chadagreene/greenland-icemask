@@ -25,9 +25,9 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 		* [Climate Data Toolbox for MATLAB](https://github.com/chadagreene/CDT), 
 		* [ITS\_LIVE v2 Greenland velocity mosaic](https://its-live-data.s3.amazonaws.com/mosaics/annual/v02/ITS_LIVE_velocity_120m_GRE_0000_v02.nc). 
 	* Run `greenland_extruded_velocity_and_thickness_plotter.m` afterward to view the extruded velocity and thickness data, and make these: 
-	<p align="center"><img src="figures/greenland_extruded_velocity_and_thickness_2022-12-15.jpg" width="600"/></p>
-	<p align="center"><img src="figures/greenland_extruded_thickness_error_2022-12-15.jpg" width="200"/></p>
-	<p align="center"><img src="figures/greenland_extruded_basins_2022-12-15.jpg" width="200"/></p>
+	<p align="center"><img src="figures/greenland_extruded_velocity_and_thickness_2023-04-06.jpg" width="600"/></p>
+	<p align="center"><img src="figures/greenland_extruded_thickness_error_2023-04-06.jpg" width="200"/></p>
+	<p align="center"><img src="figures/greenland_extruded_basins_2023-04-06.jpg" width="200"/></p>
 	
 1. **`measures_terminuspicks_compiler.m`** compiles all annual shapefile data from *Joughin et al., 2021* into a single .mat file. Put all 49 years of shapefile data into a single folder then run this script. 
 	* This script creates `measures_greenland_terminus_picks_v2.mat`.
