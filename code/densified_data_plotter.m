@@ -2,7 +2,7 @@
 
 %% Load data 
 
-T = load('terminus_data_densified_2022-11-14.mat'); 
+T = load('terminus_data_densified_2023-01-09.mat'); 
 
 T.x = double(T.x); 
 T.y = double(T.y); 
@@ -49,13 +49,14 @@ hsb.LineWidth = 1;
 hsb.YData = hsb.YData-3e3; 
 hsbt.Position(2) = hsbt.Position(2)-3e3; 
 
-ntitle('a','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+%ntitle('a','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
 txtcb.BackgroundColor=[.5 .5 .5 .5];
 %txtcb.BackgroundColor=[1 1 1 .5];
 txtcb.Margin=.0001;
 
-% m(1) = mapzoompsn_coast('ne','frame','off'); 
-% m(1).Position(1) = 0.155;
+m(1) = mapzoompsn_coast('ne','frame','off'); 
+m(1).Position(1) = 0.155;
+
 
 % bottom left
 ax(2) = axes('position',[0 0 3/4 1/3]);
@@ -67,9 +68,8 @@ plotstuff(xlim,ylim,T.x,T.y,T.t,cax)
 axis([mean(xlim)+diff(xlim)*[-1 1]/2 mean(ylim)+diff(xlim)*[-1 1]/6])
 [hsb,hsbt] = scalebarpsn('len',10,'location','sw','color','w','fontsize',5); 
 hsb.LineWidth = 1; 
-ntitle('g','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
-%m(2) = mapzoompsn_coast('ne','frame','off','insetsize',0.5); 
-
+%ntitle('g','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+m(2) = mapzoompsn_coast('ne','frame','off','insetsize',0.5); 
 
 % Petermann
 ax(3) = axes('position',[1/4 2/3 1/4 1/3]);
@@ -80,10 +80,11 @@ plotstuff(xlim,ylim,T.x,T.y,T.t,cax)
 axis([mean(xlim)+diff(xlim)*[-1 1]/2 mean(ylim)+diff(xlim)*[-1 1]/2])
 [hsb,hsbt] = scalebarpsn('len',20,'location','se','color','k','fontsize',5); 
 hsb.LineWidth = 1; 
-ntitle('b','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
-%m(3) = mapzoompsn_coast('ne','frame','off','insetsize',0.5); 
-%
-% fuse
+%ntitle('b','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+m(3) = mapzoompsn_coast('nw','frame','off','insetsize',0.5); 
+
+
+%% fuse
 ax(4) = axes('position',[2/4 2/3 1/4 1/3]);
 % axis(axl(3,:))
 % axis([mean(xlim)+diff(xlim)*[-1 1]/2 mean(ylim)+diff(xlim)*[-1 1]/2])
@@ -93,9 +94,10 @@ plotstuff(xlim,ylim,T.x,T.y,T.t,cax)
 axis([ -280065.80    -226306.42   -1957682.64   -1903923.26])
 [hsb,hsbt] = scalebarpsn('len',10,'location','se','color','k','fontsize',5); 
 hsb.LineWidth = 1; 
-ntitle('c','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+%ntitle('c','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+m(4) = mapzoompsn_coast('nw','frame','off','insetsize',0.5); 
 
-
+%%
 % bottom right 
 ax(5) = axes('position',[3/4 0 1/4 1/3]);
 % axis(axl(9,:))
@@ -110,9 +112,10 @@ plotstuff(xlim,ylim,T.x,T.y,T.t,cax)
 axis([ 172867.03     275317.78 mean([-2757798.14   -2655299.10])+[-1 1]*diff([172867.03     275317.78])/2])
 [hsb,hsbt] = scalebarpsn('len',10,'location','se','color','w','fontsize',5); 
 hsb.LineWidth = 1; 
-ntitle('h','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+%ntitle('h','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+m(5) = mapzoompsn_coast('nw','frame','off','insetsize',0.5); 
 
-% top right
+%% top right
 ax(6) = axes('position',[3/4 2/3 1/4 1/3]);
 %axis(axl(7,:))
 % axis([76208.30     124955.76   -3047533.83   -2998786.38])
@@ -123,10 +126,10 @@ plotstuff(xlim,ylim,T.x,T.y,T.t,cax)
 axis([75959.19     122130.97   -3045816.13   -2999644.35])
 [hsb,hsbt] = scalebarpsn('len',10,'location','sw','color','k','fontsize',5); 
 hsb.LineWidth = 1; 
-ntitle('d','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+%ntitle('d','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+m(6) = mapzoompsn_coast('ne','frame','off','insetsize',0.5); 
 
-
-% middle right
+%% middle right
 % %ax(7) = axes('position',[3/4 1/3 1/4 1/3]);
 % ax(7) = axes('position',[2/4+1/8 1/3 3/8 1/3]);
 % %axis(axl(10,:))
@@ -152,8 +155,10 @@ axis([xi-dx xi+dx yi-dy yi+dy])
 %axis([291283.95     412416.92   -2609779.22   -2529023.91])
 [hsb,hsbt] = scalebarpsn('len',10,'location','sw','color','k','fontsize',5); 
 hsb.LineWidth = 1; 
-ntitle('f','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+%ntitle('f','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+m(7) = mapzoompsn_coast('nw','frame','off','insetsize',0.5); 
 
+%% Jako
 
 ax(8) = axes('position',[1/4 1/3 3/8 1/3],'color','none');
 xi=359065;
@@ -169,10 +174,16 @@ axis([xi-dx xi+dx yi-dy yi+dy])
 [hsb,hsbt] = scalebarpsn('len',5,'location','se','color','k','fontsize',5); 
 hsb.LineWidth = 1; 
 
-ntitle('e','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+%ntitle('e','location','northwest','fontweight','bold','fontsize',7,'color','w','backgroundcolor','k','margin',.01)
+m(8) = mapzoompsn_coast('sw','frame','off','insetsize',0.5); 
 
-% export_fig('/Users/cgreene/Documents/GitHub/greenland-coastlines/figures/greenland_coastline_summary_2022-11-17.jpg','-r600','-opengl','-nocrop','-p0.002')
+% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_coastline_summary_2023-01-09.jpg','-r600','-opengl','-nocrop','-p0.002')
 
+% exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/greenland_coastline_summary_2023-01-09.eps','Resolution',300)
+%exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/fig_01.eps','ContentType','vector')
+% export_fig('/Users/cgreene/Documents/papers/greene2023greenland/fig_01.jpg','-r900','-opengl','-nocrop','-p0.002')
+
+return
 %%
 if false 
 
@@ -219,7 +230,9 @@ function plotstuff(xl,yl,xc,yc,tc,cax,p)
 
    caxis(cax)
    axis xy 
-   label_greenland_glaciers('fontsize',5,'color',0.1*[1 1 1],'shadow','abbreviate')
+   hl = label_greenland_glaciers('fontsize',5.5,'color',0.1*[1 1 1],'shadow','abbreviate');
+%    set(hl(:,1),'color',[172 222 164]/255); 
+%    set(hl(:,2:end),'color',[0 0 0]); 
    box on
    set(gca,'xtick',[],'ytick',[],'linewidth',2,'xcolor','k','ycolor','k')
 
@@ -431,8 +444,10 @@ if inset
       
     gp = plotboxpos(gca); 
     
-    insetwidth = insetsize*gp(3); 
-    insetheight = insetsize*gp(4); % just changed this to 4 (was 3 for a year or so? ) 
+%     insetwidth = insetsize*gp(3); 
+%     insetheight = insetsize*gp(4); % just changed this to 4 (was 3 for a year or so? ) 
+        insetwidth = 0.0625;
+        insetheight = 0.1667;
     
     switch lower(location)
         case {'southwest','sw'}
@@ -462,7 +477,7 @@ if inset
    
   
    % Plot greenland: 
-   greenland('patch','facecolor',0.75*[1 1 1],'linewidth',0.2)
+   greenland('patch','facecolor',0.9*[1 1 1],'linewidth',0.2,'edgecolor',.6*[1 1 1])
    
    % Plot red box:
    if usekm

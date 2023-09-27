@@ -13,7 +13,7 @@ A_mean = mean(A_ts);
 
 %%
 % 
-t = datetime(t,'convertfrom','datenum'); 
+%t = datetime(t,'convertfrom','datenum'); 
 ind = all(isfinite(A_ts),2) & t>=datetime(1985,8,15) & t<=datetime(2022,1,15); 
 
 % ind = 154:586; % for highest confidence data June 1985 through June 2021. 
@@ -300,8 +300,13 @@ plot(t(1),0,'.','linewidth',.8,'color',linecol,'markersize',7)
 txtsiz = linspace(0.1,6,Nlo); 
 txtsiz = [linspace(0.1,2,150),linspace(2.1,6,Nlo-150)];
 for k = 1:Nlo
+    if k<184
+        delete(txt_lo(k))
+    else
     txt_lo(k).FontSize = txtsiz(k); 
     %txt_lo(k).Color = cm_lo(k,:); 
+    end
+
 end
 ylim([-1060 5])
 textborder(t(end)+50,M_sum(end),'Greenland ',linecol,shadowcol,'fontname','Helvetica','fontsize',7,'fontweight','bold','horiz','left','vert','mid')
@@ -320,7 +325,7 @@ uistack(txt(:),'bottom')
 %txt(22).String = '+100 Gt'; 
 txt(21).String = ''; 
 txt(11).String = '-1000 Gt';
-text(xl(1),yl(end),'Cumulative mass change due to glacier retreat since 1985','fontsize',7,'horiz','left','vert','bot','fontweight','bold','color',.1*[1 1 1])
+%text(xl(1),yl(end),'Cumulative mass change due to glacier retreat since 1985','fontsize',7,'horiz','left','vert','bot','fontweight','bold','color',.1*[1 1 1])
 set(gca,'ycolor','none','xcolor',.15*[1 1 1])
 axis(ax)
 xtick = datenum(1986:2:2022,1,1); 
@@ -329,7 +334,9 @@ set(gca,'xtick',xtick,'xticklabel',datestr(xtick,'yyyy'))
 gc = gca; 
 gc.Position(1) = 0.02;
 
-% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_cumulative_masschange_1985-2021.jpg','-r900','-p0.01')
+% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_cumulative_masschange_1985-2022_v02.jpg','-r900','-p0.01')
+%exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/fig_02.eps','ContentType','vector')
+%export_fig('/Users/cgreene/Documents/papers/greene2023greenland/fig_02.jpg','-r900','-p0.01')
 
 %% SUBFUNCTION 
 
