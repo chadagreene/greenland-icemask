@@ -4,7 +4,6 @@
 % 
 % Chad A. Greene, NASA/JPL, November 2022. 
 
-
 %%  Load data 
 
 filename = 'greenland_extruded_velocity_and_thickness_2023-04-06.nc'; 
@@ -202,6 +201,8 @@ set(gcf,'color','k')
 % goal width 7.2 in = 183 mm
 
 %export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_velocity_and_thickness_2023-04-06.jpg','-r600')
+export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_ED07.jpg','-r900','-p0.01')
+exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_ED07.eps','ContentType','vector')
 
 %%
 
@@ -247,6 +248,8 @@ axis(zl)
 hs(1).LineWidth = 1; 
 
 % export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_thickness_error_2023-04-06.jpg','-r600')
+export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_ED10.jpg','-r900','-p0.01')
+exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_ED10.eps','ContentType','vector')
 
 %%
 
@@ -283,3 +286,5 @@ axis(zl)
 hs(1).LineWidth = 1; 
 
 % export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_extruded_basins_2023-04-06.jpg','-r600')
+export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_ED11.jpg','-r900','-p0.01')
+ exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_ED11.eps','ContentType','vector')

@@ -22,7 +22,7 @@ if devon
 
 else
    cd('/Applications/MATLAB_R2022a.app/toolbox/matlab/specgraph/private')
-   fn_term = '/Users/cgreene/Documents/data/coastlines/greenland-coastlines-greene/terminus_data_densified_2022-11-14.mat';
+   fn_term = 'terminus_data_densified_2023-01-09.mat';
    fn_initial = ['/Users/cgreene/Documents/MATLAB/greenland_icemask_initial_',datestr(now,'yyyy-mm-dd'),'.mat']; 
    fn_backfill = ['/Users/cgreene/Documents/MATLAB/greenland_icemask_backfill_',datestr(now,'yyyy-mm-dd'),'.mat'];
    fn_prefinal = ['/Users/cgreene/Documents/MATLAB/greenland_icemask_prefinal_',datestr(now,'yyyy-mm-dd'),'.mat'];
@@ -59,7 +59,7 @@ clear ind
 
 %% Load gridded data 
 
-filename = 'greenland_extruded_velocity_and_thickness_2022-12-15.nc'; 
+filename = 'greenland_extruded_velocity_and_thickness_2023-04-06.nc'; 
 
 x = double(ncread(filename,'x')); 
 y = double(ncread(filename,'y')); 
@@ -274,7 +274,9 @@ if SaveAdjustmentAnimations
     sb1.LineWidth = 1; 
     
     export_fig('/Users/cgreene/Documents/GitHub/greenland-coastlines/figures/carve_fill_cartoon.jpg','-r600')
-    
+export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_ED09.jpg','-r900','-p0.01')
+exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_ED09.eps','ContentType','vector')
+
     txt_title = ntitle('Prior','fontweight','bold','fontsize',8); 
     gif('/Users/cgreene/Documents/GitHub/greenland-coastlines/animations/carve_fill_cartoon.gif','resolution',900,'frame',gca,'delaytime',1)
     

@@ -71,3 +71,5 @@ for k = 1:length(tmp)
 end
 
 %export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/datadensity_timeline.jpg','-r900','-p0.01')
+% export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_ED02.jpg','-r900','-p0.01')
+% exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_ED02.eps','ContentType','vector')

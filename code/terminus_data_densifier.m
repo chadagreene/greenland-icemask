@@ -142,7 +142,7 @@ dy = doy(t);
 [sum(yr>=1972 & data_origin==4) sum(yr>=1972 & data_origin==3) sum(yr>=1972 & data_origin==2) sum(yr>=1972 & data_origin==1)]
 [sum(yr>=1985 & data_origin==4) sum(yr>=1985 & data_origin==3) sum(yr>=1985 & data_origin==2) sum(yr>=1985 & data_origin==1)]
 
-return
+
 yr_edge = min(yr)-.5:max(yr)+.5;
 dy_edge = .5:365.5;
 
@@ -209,17 +209,21 @@ txt2(6) = text(xl(1),1200,'1200 total terminus positions per day',...
    'fontsize',fs,'color',ytickcolor,'horiz','left','vert','bot');
 set(gca,'ycolor','none','xcolor',xcolor); 
 
-ht1 = textcolorbar({'Zhang';'Cheng';'Goliber';'Joughin v2';'Black'},...
+% ht1 = textcolorbar({'Zhang';'Cheng';'Goliber';'Joughin v2';'Black'},...
+%    'colormap',flipud(hc),'location','ne','fontsize',fs,'background','w'); 
+ht1 = textcolorbar({'AutoTerm';'CALFIN';'TermPicks';'MEaSUREs (Joughin)';'MEaSUREs (Black)'},...
    'colormap',flipud(hc),'location','ne','fontsize',fs,'background','w'); 
 ht1.Margin = 0.01; 
-ht1.Position(2)=.94;
+ht1.Position(2)=1;
 
 set(gcf,'renderer','painters')
 % exportgraphics(gcf,'/Users/cgreene/Documents/GitHub/greenland-icemask/figures/terminus_histograms.jpg','resolution',600)
+exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_ED06.jpg','resolution',600)
+exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_ED06.eps','ContentType','vector')
 
 % housekeeping
 clear yr mo dy ax h1 h2  histcolor  fs xl txt*
-
+return
 %% Densify the terminus segments: 
 
 animateDensification = false; 

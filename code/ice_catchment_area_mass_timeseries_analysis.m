@@ -186,6 +186,8 @@ xtickangle(0)
 ntitle(' d ','fontsize',8,'fontweight','bold','location','nw')
 
 % export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_seasonal_area_mass_anomalies.jpeg','-r900','-p0.01','-painters')
+% export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_ED01.jpg','-r900','-p0.01')
+% exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_ED01.eps','ContentType','vector')
 
 %%
 
@@ -350,6 +352,8 @@ ax(1).Position(2)=.5;
 ax(2).Position(2)=.5; 
 
 % export_fig /Users/cgreene/Documents/GitHub/greenland-icemask/figures/ice_catchment_area_mass_seasonal_histograms.jpg -r600  -p0.01
+% export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_ED03.jpg','-r900','-p0.01')
+% exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_ED03.eps','ContentType','vector')
 
 %% 
 
@@ -531,6 +535,10 @@ uistack(axx,'bottom')
 foo.OuterPosition = [fp(1)+fp(3)+.01 fp(2) .28 fp(4)];
 
 %export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/ice_catchment_mass_map_scatter.jpg','-r600','-p0.01')
+% export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_03.jpg','-r900','-p0.01')
+% exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_03.eps','ContentType','vector')
+
+
 %%
 
 figure

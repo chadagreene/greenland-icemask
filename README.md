@@ -1,7 +1,16 @@
 # Greenland monthly ice masks
 MATLAB scripts to combine terminus picks into a consistent gridded ice mask.
 
-![](figures/greenland_coastline_summary_2022-11-17.jpg)
+![](figures/greenland_coastline_summary_2023-01-09.jpg)
+
+# Data access
+The final data product is a gridded, time-evolving Greenland ice mask at 120 m spatial resolution, posted at monthly intervals from 1972 to 2022 (use caution before 1985 due to data limitations). The ice masks are presented in NetCDF format, along with ice velocity and thickness data here: [https://www.doi.org/10.5067/579TO87M7IZB](https://www.doi.org/10.5067/579TO87M7IZB)
+
+
+# Citation 
+If you use this data, please cite our paper! 
+
+Greene, C.A., Gardner, A.S., Wood, M. et al. Ubiquitous acceleration in Greenland Ice Sheet calving from 1985 to 2022. *Nature*. [https://doi.org/10.1038/s41586-023-06863-2](https://doi.org/10.1038/s41586-023-06863-2)
 
 # Contents 
 * `animations` folder contains a few gifs. Hundreds more animations are made for quality-control checks by `greenland_icemask_animations_for_qc.m`, but those animations are stored with the data because of filesize limitations. 
@@ -94,6 +103,5 @@ elevations to solve for approximate thickness in fjords where ice no longer exis
 Here's an animation of the final product: 
 [![Calving animation](https://i.ytimg.com/vi/zQcJ74KYc84/maxresdefault.jpg)](https://www.youtube.com/watch?v=zQcJ74KYc84 "Greenland Ice Sheet glacier terminus retreat, 1972–2022")
 
-# Citation 
-If you use this data, please cite our paper! Check back here soon or contact me personally for citation information. 
+
 	

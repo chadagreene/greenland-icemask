@@ -300,12 +300,12 @@ plot(t(1),0,'.','linewidth',.8,'color',linecol,'markersize',7)
 txtsiz = linspace(0.1,6,Nlo); 
 txtsiz = [linspace(0.1,2,150),linspace(2.1,6,Nlo-150)];
 for k = 1:Nlo
-    if k<184
-        delete(txt_lo(k))
-    else
+    % if k<184
+    %     delete(txt_lo(k))
+    % else
     txt_lo(k).FontSize = txtsiz(k); 
     %txt_lo(k).Color = cm_lo(k,:); 
-    end
+    %end
 
 end
 ylim([-1060 5])
@@ -334,6 +334,7 @@ set(gca,'xtick',xtick,'xticklabel',datestr(xtick,'yyyy'))
 gc = gca; 
 gc.Position(1) = 0.02;
 
+% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_cumulative_masschange_1985-2022_AGU.jpg','-r1200','-p0.01')
 % export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_cumulative_masschange_1985-2022_v02.jpg','-r900','-p0.01')
 %exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/fig_02.eps','ContentType','vector')
 %export_fig('/Users/cgreene/Documents/papers/greene2023greenland/fig_02.jpg','-r900','-p0.01')
