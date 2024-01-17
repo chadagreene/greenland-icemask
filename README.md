@@ -1,3 +1,8 @@
+# Nature paper
+This repo is related to our paper that came out in *Nature*. Please cite it as: 
+
+Greene, C.A., Gardner, A.S., Wood, M. et al. Ubiquitous acceleration in Greenland Ice Sheet calving from 1985 to 2022. *Nature* 625, 523–528 (2024). [https://doi.org/10.1038/s41586-023-06863-2](https://doi.org/10.1038/s41586-023-06863-2)
+
 # Greenland monthly ice masks
 MATLAB scripts to combine terminus picks into a consistent gridded ice mask.
 

@@ -188,6 +188,62 @@ ntitle(' d ','fontsize',8,'fontweight','bold','location','nw')
 % export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_seasonal_area_mass_anomalies.jpeg','-r900','-p0.01','-painters')
 % export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_ED01.jpg','-r900','-p0.01')
 % exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_ED01.eps','ContentType','vector')
+return
+%% Highlight slide 
+
+figure
+boundedline(datenum(t),M_tot-M_tot(end),M_tot_err,'nan','gap','color',col1,'alpha','transparency',0.15)
+hold on
+%plot(datenum(t),M_tot_interannual-M_tot(end),'color',col2)
+p3=plot(datenum(t(date_range)),polyval(pvM,datenum(t(date_range)))-M_tot(end),'color',col3);
+box off 
+axis tight
+xlim([datenum('jul 1, 1985') datenum('mar 1, 2022')])
+datetick('x','yyyy','keeplimits')
+set(gca,'fontsize',fs,'ycolor',axcol,'color','none')
+ylabel('Ice sheet mass (Gt) w.r.t. 2022','fontsize',fs) 
+ylim(ylim + 30*[-1 1])
+tmp = polyval(pvM,t1)-M_tot(end);
+text(t1,tmp,[num2str(round(M_rate_Gt_per_yr)),' Gt yr^{-1}'],'horiz','left','vert','bot','color',col3,'fontsize',6)
+
+set(gcf,'pos',[560   612   378   236])
+
+export_fig highlight_slide_2.jpg -r1200 -p0.01
+
+%%
+
+cmap = cmocean('thermal',5); 
+col3 = cmap(3,:); 
+
+figure
+[hb1,hb2]=boundedline(datenum(t),M_tot-M_tot(end),M_tot_err,'nan','gap','color',col1,'alpha','transparency',0.15)
+hold on
+%plot(datenum(t),M_tot_interannual-M_tot(end),'color',col2)
+p3=plot(datenum(t(date_range)),polyval(pvM,datenum(t(date_range)))-M_tot(end),'color',col3);
+box off 
+axis tight
+xlim([datenum('jul 1, 1985') datenum('mar 1, 2022')])
+datetick('x','yyyy','keeplimits')
+set(gca,'fontsize',fs,'ycolor',axcol,'color','none')
+ylabel('Ice lost to retreat (Gt)','fontsize',fs) 
+ylim(ylim + 30*[-1 1])
+tmp = polyval(pvM,t1)-M_tot(end);
+text(t1,tmp,[num2str(round(M_rate_Gt_per_yr)),' Gt yr^{-1}'],'horiz','left','vert','bot','color',col3,'fontsize',8,'fontweight','bold')
+
+set(gcf,'pos',[560   612   378   236],'color','k')
+set(gca,'xcolor',.8*[1 1 1],'ycolor',.8*[1 1 1])
+
+hb1.Color = cmap(5,:); 
+hb2.FaceColor = cmap(5,:); 
+hb2.FaceAlpha = 0.2;
+hb1.LineWidth = 1; 
+
+p3.LineWidth = 1; 
+set(gca,'fontsize',8)
+set(gca,'XTicklabelrotation',0)
+set(gca,'ytick',0:100:1000)
+
+% export_fig highlight_slide_2b.jpg -r1200 -p0.01
 
 %%
 
@@ -537,7 +593,137 @@ foo.OuterPosition = [fp(1)+fp(3)+.01 fp(2) .28 fp(4)];
 %export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/ice_catchment_mass_map_scatter.jpg','-r600','-p0.01')
 % export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_03.jpg','-r900','-p0.01')
 % exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/figures/eps/fig_03.eps','ContentType','vector')
+return
 
+%% NO TEXT VERSION 
+
+
+lowres = false; 
+
+figure('pos',[150 500 720 292])
+subsubplot(1,5,1)
+if lowres
+    h=imagescn(x,y,m_diff(1:4:end,1:4:end));
+    maskoverlay(x(1:4:end),y(1:4:end),catchment(1:4:end,1:4:end)==0,'color',rockcol); 
+else
+    h=imagescn(x,y,m_diff);
+    maskoverlay(x,y,catchment==0,'color',rockcol); 
+end
+hold on
+plot(x_gl,y_gl,'color',rgb('gray'),'linewidth',0.25); 
+axis image off  
+cmocean -bal
+caxis([-1 1]*150)
+%ntitle(' a ','location','nw','fontsize',8,'fontweight','bold')
+cb = colorbar;
+cb.Position = [.27 .2 .005 .2];
+cb.FontSize = 6; 
+cb(1).AxisLocation = 'in';
+yl = ylabel(cb(1),{'Mass';'change';'1985-2022';'(Gt)'},'fontsize',6,'rotation',00);
+yl(1).VerticalAlignment = 'middle'; 
+yl(1).Position(1) = -6.5;
+yl(1).Position(2) = -15;
+
+
+subsubplot(1,5,2)
+if lowres
+    h=imagescn(x,y,seas_range(1:4:end,1:4:end));
+    maskoverlay(x(1:4:end),y(1:4:end),catchment(1:4:end,1:4:end)==0,'color',rockcol); 
+else
+    h=imagescn(x,y,seas_range);
+    maskoverlay(x,y,catchment==0,'color',rockcol); 
+end
+hold on
+plot(x_gl,y_gl,'color',rgb('gray'),'linewidth',0.25); 
+axis image off  
+cmocean amp
+%caxis([-1 1]*150)
+%ntitle(' b ','location','nw','fontsize',8,'fontweight','bold')
+cb(2) = colorbar;
+cb(2).Position = [.43 .2 .005 .2];
+cb(2).FontSize = 6; 
+cb(2).AxisLocation = 'in';
+yl(2) = ylabel(cb(2),{'Seasonal';'mass';'range';'(Gt)'},'fontsize',6,'rotation',00);
+yl(2).VerticalAlignment = 'middle'; 
+yl(2).Position(1) = -6.5;
+yl(2).Position(2) = 5.5;
+
+%txt(4) = text(567963  ,  -2367963+30e3,'Kangerlussuaq','fontangle','italic','fontsize',5,'horiz','left','color',txtcol,'vert','top');
+%plot([ 508800      548986],[-2315051    -2337377],'-','color',txtcol,'linewidth',0.2)
+% 
+% txt(4) = text(567963  ,  -2153600-50e3,'Kangerlussuaq','fontangle','italic','fontsize',5,'horiz','left','color',txtcol,'vert','bot');
+% plot([528579      559300],[-2202808    -2191490],'-','color',txtcol,'linewidth',0.2)
+
+subsubplot(1,5,3)
+if lowres
+    h=imagescn(x,y,mo_max(1:4:end,1:4:end));
+    maskoverlay(x(1:4:end),y(1:4:end),catchment(1:4:end,1:4:end)==0,'color',rockcol); 
+    h.AlphaData =  alph(1:4:end,1:4:end); 
+else
+    h=imagescn(x,y,mo_max);
+    maskoverlay(x,y,catchment==0,'color',rockcol); 
+h.AlphaData =  alph; 
+end
+hold on
+plot(x_gl,y_gl,'color',rgb('gray'),'linewidth',0.25); 
+axis image off  
+cmocean phase
+caxis([0.5  12.5])
+%ntitle(' c ','location','nw','fontsize',8,'fontweight','bold')
+axl = axis; 
+
+addpath('/Users/cgreene/Documents/MATLAB/data_testing'); 
+[h_pb,txtpb] = itslive_phasebar('location','se','size',0.4,'color','w','centertext',{'Time of';'max extent'},'fontsize',5.5);
+h_pb_ch = get(h_pb,'children'); 
+set(h_pb_ch(1),'color','k')
+h_pb.Position = [0.5330    0.14    0.07    0.2645]; 
+
+good = M_diff_Gt<0 & M_seasonal_range>1e-5 & has_data' & ~lt & M_seasonal_range>M_seasonal_error & abs(A_diff_km2)>A_diff_km2_err;
+
+%txt(5) = text(567963  ,  -2367963+10e3,'Helheimgletscher','fontangle','italic','fontsize',5,'horiz','left','color',txtcol,'vert','top');
+
+delete(txtpb(:))
+
+fp = plotboxpos(gca); 
+
+
+foo=subplot(1,5,[4 5]);
+scatter(M_seasonal_range(good),-M_diff_Gt(good),5,M_max_month(good),'filled')
+%set(gca,'yaxislocation','right','xaxislocation','top')
+caxis([0.5 12.5])
+cmocean phase 
+hold on
+
+set(gca,'fontsize',7,'color','none','xscale','log','yscale','log')
+%set(gca,'ydir','reverse')
+%xlabel('Range of seasonal mass variability (Gt)','fontsize',7)
+%ylabel('Mass loss from 1985 to 2022 (Gt)','fontsize',7)
+axis tight
+%axis([1e-5 14 .0007 520])
+%axis([0.0014   14.0000    0.0171  297.3304])
+set(gca,'xtick',[],'ydir','reverse','ytick',[])
+
+pv = polyfit(log10(M_seasonal_range(good)),log10(-M_diff_Gt(good)),1);
+xtmp = linspace(min(M_seasonal_range(good)),max(M_seasonal_range(good)),1e3); 
+pl = plot(xtmp,10.^(polyval(pv,log10(xtmp))),'--','color',.5*[1 1 1]); 
+uistack(pl,'bottom')
+
+
+axx = axes;
+axx.InnerPosition = [0 0 1 1];
+axis off
+axx.Color = 'none';
+%text(fp(1)+fp(3)+.01,fp(2)+fp(4),' d ','horiz','left','vert','top','fontsize',8,'fontweight','bold')
+uistack(axx,'bottom') 
+
+foo.OuterPosition = [fp(1)+fp(3)+.01 fp(2) .28 fp(4)];
+
+cb(1).Ticks = []; 
+cb(2).Ticks = []; 
+cb(1).Label.String = ''; 
+cb(2).Label.String = ''; 
+
+% export_fig('/Users/cgreene/Documents/papers/greene2023greenland/figures/jpg/fig_03_NOTEXT.jpg','-r900','-p0.01')
 
 %%
 

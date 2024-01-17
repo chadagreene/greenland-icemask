@@ -228,7 +228,9 @@ set(gca,'fontsize',7,'color','none')
 % 
 % h_pb_ch = get(h_pb,'children'); 
 % set(h_pb_ch(1),'color','k')
-export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/catchment_mass_change_seasonality_test.jpg','-r600','-p0.01')
+% export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/catchment_mass_change_seasonality_test.jpg','-r600','-p0.01')
+
+
 end
 %%
 
@@ -338,6 +340,11 @@ gc.Position(1) = 0.02;
 % export_fig('/Users/cgreene/Documents/GitHub/greenland-icemask/figures/greenland_cumulative_masschange_1985-2022_v02.jpg','-r900','-p0.01')
 %exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/fig_02.eps','ContentType','vector')
 %export_fig('/Users/cgreene/Documents/papers/greene2023greenland/fig_02.jpg','-r900','-p0.01')
+
+% exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/news_brief.eps','ContentType','vector')
+% export_fig('/Users/cgreene/Documents/papers/greene2023greenland/news_brief.jpg','-r1200','-p0.01')
+% exportgraphics(gcf,'/Users/cgreene/Documents/papers/greene2023greenland/news_brief.pdf','ContentType','vector')
+
 
 %% SUBFUNCTION 
 
